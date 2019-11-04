@@ -110,4 +110,25 @@ public class LocacaoDBC {
 
     }
 
+    public void delete(Locacao loc) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        try {
+
+            pst = conn.prepareStatement("DELETE FROM Locacao WHERE id = ?");
+            pst.setInt(1, loc.getIdEquipamento());
+
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "Deletado com Sucesso");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst);
+        }
+
+    }
 }

@@ -153,13 +153,13 @@ public class ReservaDBC {
 
             while (rs.next()) {
 
-                Reserva loc = new Reserva();
-                loc.setDataHoraReserva(rs.getString("dataLocacao"));
-                loc.setIdReserva(rs.getInt("idLocacao"));
-                loc.setNomeResponsavel(rs.getString("nomeResponsavel"));
-                loc.setCpfResp(rs.getInt("CPFResponsavel"));
+                Reserva res = new Reserva();
+                res.setDataHoraReserva(rs.getString("dataLocacao"));
+                res.setIdReserva(rs.getInt("idLocacao"));
+                res.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                res.setCpfResp(rs.getInt("CPFResponsavel"));
 
-                lista.add(loc);
+                lista.add(res);
 
             }
 
@@ -193,7 +193,7 @@ public class ReservaDBC {
 
                 Reserva res = new Reserva();
                 res.setDataHoraReserva(rs.getString("dataHoraReserva"));
-                res.setIdReserva(rs.getInt("id"));
+                res.setIdReserva(rs.getInt("idResetva"));
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));

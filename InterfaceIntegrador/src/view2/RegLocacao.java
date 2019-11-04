@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import model.DBC.LocacaoDBC;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.DBC.ReservaDBC;
 
 /**
@@ -132,8 +133,10 @@ public class RegLocacao extends javax.swing.JPanel {
                 resDB.delete(res);
                 
             } else {
+                JOptionPane.showMessageDialog(null, "CPF Inválido");
             }
         } else {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos");
         }
     }//GEN-LAST:event_btRegActionPerformed
     

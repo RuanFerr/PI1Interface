@@ -28,7 +28,7 @@ public class SrcEquip extends javax.swing.JPanel {
     public SrcEquip(boolean b) {
 
         initComponents();
-        
+
         fillTabAll();
         pnExibir.setEnabled(false);
 
