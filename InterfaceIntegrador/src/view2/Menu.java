@@ -6,6 +6,9 @@
 package view2;
 
 import java.awt.BorderLayout;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -131,9 +134,19 @@ public class Menu extends javax.swing.JFrame {
         jMenu2.add(jMenuItem6);
 
         jMenuItem7.setText("Reservas");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem7);
 
         jMenuItem8.setText("Locações");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem8);
 
         jMenuBar1.add(jMenu2);
@@ -270,7 +283,17 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void mnCadastrarLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarLocacaoActionPerformed
-        // TODO add your handling code here:
+
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new RegLocacao(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new CadPessoa());
+
+        MainPNL.updateUI();
+
     }//GEN-LAST:event_mnCadastrarLocacaoActionPerformed
 
     private void mnCadastrarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarReservaActionPerformed
@@ -284,6 +307,38 @@ public class Menu extends javax.swing.JFrame {
 
         MainPNL.updateUI();
     }//GEN-LAST:event_mnCadastrarReservaActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        BorderLayout bl = new BorderLayout();
+
+        try {
+            bl.addLayoutComponent(new SrcLocacao(), null);
+            MainPNL.setLayout(bl);
+            MainPNL.removeAll();
+            MainPNL.add(new SrcLocacao());
+
+            MainPNL.updateUI();
+
+        } catch (ParseException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new SrcReserva(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new SrcReserva());
+
+        MainPNL.updateUI();
+
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments

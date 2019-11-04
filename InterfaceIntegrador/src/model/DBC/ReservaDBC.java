@@ -6,6 +6,7 @@
 package model.DBC;
 
 import control.connection.ConnectionFactory;
+import control.reserva.Equipamento;
 import control.reserva.Reserva;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ import javax.swing.JOptionPane;
  * @author Kelli
  */
 public class ReservaDBC {
-    
+
     public void insert(Reserva res) {
 
         Connection conn = ConnectionFactory.getConnection();
@@ -46,7 +47,7 @@ public class ReservaDBC {
         }
 
     }
-    
+
     public void update(Reserva res) {
 
         Connection conn = ConnectionFactory.getConnection();
@@ -73,7 +74,7 @@ public class ReservaDBC {
         }
 
     }
-    
+
     public List<Reserva> select() {
 
         Connection conn = ConnectionFactory.getConnection();
@@ -95,6 +96,8 @@ public class ReservaDBC {
                 res.setDataHoraReserva(rs.getString("dataHoraReserva"));
                 res.setIdReserva(rs.getInt("id"));
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                res.setEquipamento(new Equipamento());
+                res.getEquipamento().setId(rs.getInt("idEquipamento"));
                 res.setCpfResp(rs.getInt("CPFResponsavel"));
                 lista.add(res);
 
@@ -109,7 +112,7 @@ public class ReservaDBC {
         return lista;
 
     }
-    
+
     public void delete(Reserva res) {
 
         Connection conn = ConnectionFactory.getConnection();
@@ -131,5 +134,82 @@ public class ReservaDBC {
         }
 
     }
+
+    public List<Reserva> selectData(String data) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+
+        List<Reserva> lista = new ArrayList<>();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Reserva where dataHoraReserva = ?");
+            pst.setString(1, data);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                Reserva loc = new Reserva();
+                loc.setDataHoraReserva(rs.getString("dataLocacao"));
+                loc.setIdReserva(rs.getInt("idLocacao"));
+                loc.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                loc.setCpfResp(rs.getInt("CPFResponsavel"));
+
+                lista.add(loc);
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return lista;
+
+    }
     
+    public List<Reserva> selectComData(String data) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+
+        List<Reserva> lista = new ArrayList();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Reserva where dataHoraReserva = ?");
+            pst.setString(1, data);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                Reserva res = new Reserva();
+                res.setDataHoraReserva(rs.getString("dataHoraReserva"));
+                res.setIdReserva(rs.getInt("id"));
+                res.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                res.setEquipamento(new Equipamento());
+                res.getEquipamento().setId(rs.getInt("idEquipamento"));
+                res.setCpfResp(rs.getInt("CPFResponsavel"));
+                lista.add(res);
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return lista;
+
+    }
+
 }
