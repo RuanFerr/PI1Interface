@@ -6,7 +6,9 @@
 package view2;
 
 import control.reserva.Equipamento;
+import control.reserva.Reserva;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.DBC.EquipamentoDBC;
 
 /**
@@ -32,13 +34,13 @@ public class RegReserva extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel7 = new javax.swing.JLabel();
-        btnAno2 = new javax.swing.JComboBox<>();
+        btnAno2 = new javax.swing.JComboBox<String>();
         jLabel1 = new javax.swing.JLabel();
-        btnMes = new javax.swing.JComboBox<>();
+        btnMes = new javax.swing.JComboBox<String>();
         jLabel2 = new javax.swing.JLabel();
-        btnDia = new javax.swing.JComboBox<>();
+        btnDia = new javax.swing.JComboBox<Object>();
         jLabel3 = new javax.swing.JLabel();
-        cbEquip = new javax.swing.JComboBox<>();
+        cbEquip = new javax.swing.JComboBox<String>();
         jLabel4 = new javax.swing.JLabel();
         nomeResponsavel = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -77,6 +79,11 @@ public class RegReserva extends javax.swing.JPanel {
         jLabel6.setText("CPF ");
 
         btRegistrar.setText("Registrar");
+        btRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRegistrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -153,6 +160,22 @@ public class RegReserva extends javax.swing.JPanel {
         cbEquip.setModel(new javax.swing.DefaultComboBoxModel<>(retornaNomeItem()));
     }//GEN-LAST:event_btnDiaActionPerformed
 
+    private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
+
+        if (!nomeResponsavel.getText().equals(null) & !CpfResp.getText().equals(null)) {
+            if (testNumCPF(CpfResp.getText()) && control.cadastro.Pessoa.testCPF(CpfResp.getText())) {
+            
+                Reserva res = new Reserva();
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "CPF Inválido");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Deve-se preencher os campos");
+        }
+
+    }//GEN-LAST:event_btRegistrarActionPerformed
+
     public String[] retornaDias() {
 
         if (btnMes.getSelectedItem().equals("abril") || btnMes.getSelectedItem().equals("junho") || btnMes.getSelectedItem().equals("setembro") || btnMes.getSelectedItem().equals("novembro")) {
@@ -172,9 +195,8 @@ public class RegReserva extends javax.swing.JPanel {
 
     private String[] retornaNomeItem() {
 
-        String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/ " + btnAno.getSelectedItem();
         EquipamentoDBC DBEquip = new EquipamentoDBC();
-        List<Equipamento> lista = DBEquip.selectComData("", data);
+        List<Equipamento> lista = DBEquip.select();
         int tmn = lista.size();
         String[] nomes = new String[tmn];
 
@@ -186,11 +208,20 @@ public class RegReserva extends javax.swing.JPanel {
 
         return nomes;
     }
+
+    private boolean testNumCPF(String CPF) {
+        boolean ok = false;
+        try {
+            Long num = Long.parseLong(CPF);
+            ok = true;
+        } catch (Exception e) {
+            ok = false;
+        }
+        return ok;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CpfResp;
     private javax.swing.JButton btRegistrar;
-    private javax.swing.JComboBox<String> btnAno;
-    private javax.swing.JComboBox<String> btnAno1;
     private javax.swing.JComboBox<String> btnAno2;
     private javax.swing.JComboBox<Object> btnDia;
     private javax.swing.JComboBox<String> btnMes;

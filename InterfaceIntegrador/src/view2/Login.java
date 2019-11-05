@@ -5,7 +5,7 @@
  */
 package view2;
 
-import view.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,8 +32,8 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         c_email = new javax.swing.JTextField();
-        c_senha = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
+        c_Senha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,20 +56,20 @@ public class Login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(176, 176, 176)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(c_email, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(c_senha)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(btnLogin)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(51, 51, 51)
+                                .addComponent(btnLogin))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(c_Senha, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(198, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -82,7 +82,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(c_senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(c_Senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(btnLogin)
                 .addContainerGap(88, Short.MAX_VALUE))
@@ -93,10 +93,14 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
-        if (control.login.Login.BDlogin(c_email.getText(), c_senha.getText())) {
+        if (control.login.Login.BDlogin(c_email.getText(), String.valueOf(c_Senha.getPassword()))) {
+            JOptionPane.showMessageDialog(this, "Sucess");
             Menu mn = new Menu();
             mn.setVisible(true);
             dispose();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "erro");
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -139,8 +143,8 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JPasswordField c_Senha;
     private javax.swing.JTextField c_email;
-    private javax.swing.JTextField c_senha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables

@@ -84,10 +84,6 @@ public class Pessoa {
         this.id = id;
     }
 
-    public void realizarLogin(String email, String senha) {
-        //autenticar no banco
-    }
-
     public static boolean testCPF(String strCPF) {
 
         char[] charCPF = strCPF.toCharArray();
