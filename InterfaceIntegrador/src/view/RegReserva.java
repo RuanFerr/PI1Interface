@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view2;
+package view;
 
 import control.reserva.Equipamento;
 import control.reserva.Reserva;
@@ -34,13 +34,13 @@ public class RegReserva extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel7 = new javax.swing.JLabel();
-        btnAno2 = new javax.swing.JComboBox<String>();
+        btnAno2 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        btnMes = new javax.swing.JComboBox<String>();
+        btnMes = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        btnDia = new javax.swing.JComboBox<Object>();
+        btnDia = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        cbEquip = new javax.swing.JComboBox<String>();
+        cbEquip = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         nomeResponsavel = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();

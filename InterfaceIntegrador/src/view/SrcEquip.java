@@ -3,26 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view2;
+package view;
 
 import control.reserva.Equipamento;
-import control.reserva.Reserva;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import model.DBC.ReservaDBC;
+import model.DBC.EquipamentoDBC;
 
 /**
  *
  * @author Kelli
  */
-public class SrcReserva extends javax.swing.JPanel {
+public class SrcEquip extends javax.swing.JPanel {
 
     /**
-     * Creates new form SrcReserva
+     * Creates new form srcEqup
      */
-    public SrcReserva() {
+    public SrcEquip() {
+
         initComponents();
+
+    }
+
+    public SrcEquip(boolean b) {
+
+        initComponents();
+
         fillTabAll();
+        pnExibir.setEnabled(false);
+
+        pnExibir.setVisible(false);
+
     }
 
     /**
@@ -34,7 +45,8 @@ public class SrcReserva extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnBuscar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabEquip = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         cbExibir = new javax.swing.JComboBox<>();
         pnExibir = new javax.swing.JPanel();
@@ -44,21 +56,23 @@ public class SrcReserva extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         btnAno = new javax.swing.JComboBox<>();
         btnMes = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabRes = new javax.swing.JTable();
+        btnBuscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        btnBuscar.setText("buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+        tabEquip.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "id", "nome", "marca", "descricao", "Numero de Serie"
             }
-        });
+        ));
+        jScrollPane1.setViewportView(tabEquip);
 
         jLabel1.setText("Exibir");
 
-        cbExibir.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Selecionar Data" }));
+        cbExibir.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "locados", "disponiveis" }));
         cbExibir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbExibirActionPerformed(evt);
@@ -107,7 +121,7 @@ public class SrcReserva extends javax.swing.JPanel {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnExibirLayout.setVerticalGroup(
             pnExibirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,15 +136,12 @@ public class SrcReserva extends javax.swing.JPanel {
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
-        tabRes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "NomeEquipamento", "dataReserva", "Responsavel", "CPFResponsavel"
+        btnBuscar.setText("buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(tabRes);
+        });
 
         jButton1.setText("Alterar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +150,7 @@ public class SrcReserva extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("Cancelar");
+        jButton2.setText("Deletar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -148,7 +159,7 @@ public class SrcReserva extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
@@ -169,18 +180,18 @@ public class SrcReserva extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(cbExibir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnExibir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscar)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -188,41 +199,8 @@ public class SrcReserva extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-
-        ReservaDBC resDB = new ReservaDBC();
-        String opcao = (String) cbExibir.getSelectedItem();
-        if (opcao.equals("Todos")) {
-            fillTabAll();
-        } else {
-            String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
-            List<Reserva> lista = resDB.selectComData(data);
-
-            DefaultTableModel dtm = (DefaultTableModel) tabRes.getModel();
-
-            dtm.setNumRows(0);
-
-            for (Reserva res : lista) {
-
-                Object[] row = {res.getIdReserva(),
-                    res.getEquipamento().getId(),
-                    res.getDataHoraReserva(),
-                    res.getNomeResponsavel(),
-                    res.getCpfResp()
-
-                };
-
-                dtm.addRow(row);
-
-            }
-        }
-
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     private void btnDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiaActionPerformed
 
-        
-        
     }//GEN-LAST:event_btnDiaActionPerformed
 
     private void btnAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnoActionPerformed
@@ -232,10 +210,40 @@ public class SrcReserva extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAnoActionPerformed
 
     private void btnMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesActionPerformed
-     
         btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
-        
     }//GEN-LAST:event_btnMesActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        EquipamentoDBC EquipDB = new EquipamentoDBC();
+        String opcao = (String) cbExibir.getSelectedItem();
+        if (opcao.equals("Todos")) {
+            fillTabAll();
+        } else {
+            String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
+            List<Equipamento> lista = EquipDB.selectComData(opcao, data);
+
+            DefaultTableModel dtm = (DefaultTableModel) tabEquip.getModel();
+
+            dtm.setNumRows(0);
+
+            for (Equipamento equip : lista) {
+
+                Object[] row = {equip.getId(),
+                    equip.getNome(),
+                    equip.getMarca(),
+                    equip.getDescricao(),
+                    equip.getNumSerie()
+
+                };
+
+                dtm.addRow(row);
+
+            }
+        }
+
+
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void cbExibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbExibirActionPerformed
 
@@ -250,35 +258,12 @@ public class SrcReserva extends javax.swing.JPanel {
             pnExibir.setEnabled(true);
 
         }
+
     }//GEN-LAST:event_cbExibirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void fillTabAll() {
-
-        ReservaDBC rs = new ReservaDBC();
-        List<Reserva> list = rs.select();
-        DefaultTableModel dtm = (DefaultTableModel) tabRes.getModel();
-
-        dtm.setNumRows(0);
-
-        for (Reserva res : list) {
-
-            Object[] row = {res.getIdReserva(),
-                res.getEquipamento().getId(),
-                res.getDataHoraReserva(),
-                res.getNomeResponsavel(),
-                res.getCpfResp()
-
-            };
-
-            dtm.addRow(row);
-
-        }
-
-    }
 
     public String[] retornaDias() {
 
@@ -296,6 +281,32 @@ public class SrcReserva extends javax.swing.JPanel {
         }
 
     }
+
+    private void fillTabAll() {
+
+        EquipamentoDBC eq = new EquipamentoDBC();
+        List<Equipamento> list = eq.select();
+        DefaultTableModel dtm = (DefaultTableModel) tabEquip.getModel();
+
+        dtm.setNumRows(0);
+
+        for (Equipamento equip : list) {
+
+            Object[] row = {equip.getId(),
+                equip.getNome(),
+                equip.getMarca(),
+                equip.getDescricao(),
+                equip.getNumSerie()
+
+            };
+
+            dtm.addRow(row);
+
+        }
+
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> btnAno;
     private javax.swing.JButton btnBuscar;
@@ -310,6 +321,6 @@ public class SrcReserva extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnExibir;
-    private javax.swing.JTable tabRes;
+    private javax.swing.JTable tabEquip;
     // End of variables declaration//GEN-END:variables
 }
