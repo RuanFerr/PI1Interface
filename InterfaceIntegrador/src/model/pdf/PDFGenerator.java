@@ -7,11 +7,17 @@ package model.pdf;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import control.reserva.Equipamento;
 import control.reserva.Reserva;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class PDFGenerator {
@@ -40,4 +46,53 @@ public class PDFGenerator {
             doc.close();
         }
     }
+
+    public static PdfPTable criarCabecalho()
+            throws DocumentException {
+        PdfPTable table = new PdfPTable(new float[]{5f, 5f, 5f, 5f, 5f});
+        PdfPCell celulaID = new PdfPCell(new Phrase("ID"));
+        celulaID.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell celulaNome = new PdfPCell(new Phrase("Nome"));
+        celulaNome.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell celulaMarca = new PdfPCell(new Phrase("Marca"));
+        celulaMarca.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell celulaDescricao = new PdfPCell(new Phrase("Descricao"));
+        celulaDescricao.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        PdfPCell celulaNumSerie = new PdfPCell(new Phrase("Numero de serie"));
+        celulaNumSerie.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+        table.addCell(celulaID);
+        table.addCell(celulaNome);
+        table.addCell(celulaMarca);
+        table.addCell(celulaDescricao);
+        table.addCell(celulaNumSerie);
+
+        return table;
+
+    }
+
+    public static void preencherDados(Document document, PdfPTable table, List<Equipamento> equip) throws DocumentException {
+        if (document.isOpen()) {
+            for (Equipamento eq : equip) {
+                PdfPCell celula1 = new PdfPCell(new Phrase(String.valueOf(eq.getId())));
+                PdfPCell celula2 = new PdfPCell(new Phrase(eq.getNome()));
+                PdfPCell celula3 = new PdfPCell(new Phrase(eq.getMarca()));
+                PdfPCell celula4 = new PdfPCell(new Phrase(eq.getDescricao()));
+                PdfPCell celula5 = new PdfPCell(new Phrase(String.valueOf(eq.getNumSerie())));
+
+                table.addCell(celula1);
+                table.addCell(celula2);
+                table.addCell(celula3);
+                table.addCell(celula4);
+                table.addCell(celula5);
+            }
+
+            document.add(table);
+        }
+    }
+
 }

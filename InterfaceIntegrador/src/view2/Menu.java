@@ -35,34 +35,22 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem11 = new javax.swing.JMenuItem();
         MainPNL = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mnCadastrar = new javax.swing.JMenu();
         mnCadastrarEquipamento = new javax.swing.JMenuItem();
-        mnCadastrarCliente = new javax.swing.JMenuItem();
         mnCadastrarLocacao = new javax.swing.JMenuItem();
         mnCadastrarReserva = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem15 = new javax.swing.JMenuItem();
-        jMenuItem16 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem17 = new javax.swing.JMenuItem();
-        jMenuItem18 = new javax.swing.JMenuItem();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu9 = new javax.swing.JMenu();
-        jMenuItem19 = new javax.swing.JMenuItem();
-        jMenuItem20 = new javax.swing.JMenuItem();
+        mnExibir = new javax.swing.JMenu();
+        mnExibirEquipamento = new javax.swing.JMenuItem();
+        mnExibirReservas = new javax.swing.JMenuItem();
+        mnExibirLocacao = new javax.swing.JMenuItem();
+        mnRelatorio = new javax.swing.JMenu();
+        mnRelatorioEquipamento = new javax.swing.JMenuItem();
+        mnRelatorioReserva = new javax.swing.JMenuItem();
+        mnRelatorioLocacao = new javax.swing.JMenuItem();
+        mnAdmin = new javax.swing.JMenu();
+        mnAdminFunc = new javax.swing.JMenu();
+        mnAdminFuncCad = new javax.swing.JMenuItem();
+        mnAdminFuncExib = new javax.swing.JMenuItem();
 
         jMenuItem11.setText("jMenuItem11");
 
@@ -79,7 +67,7 @@ public class Menu extends javax.swing.JFrame {
             .addGap(0, 379, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Cadastrar");
+        mnCadastrar.setText("Cadastrar");
 
         mnCadastrarEquipamento.setText("Equipamento");
         mnCadastrarEquipamento.addActionListener(new java.awt.event.ActionListener() {
@@ -87,15 +75,7 @@ public class Menu extends javax.swing.JFrame {
                 mnCadastrarEquipamentoActionPerformed(evt);
             }
         });
-        jMenu1.add(mnCadastrarEquipamento);
-
-        mnCadastrarCliente.setText("Cliente");
-        mnCadastrarCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnCadastrarClienteActionPerformed(evt);
-            }
-        });
-        jMenu1.add(mnCadastrarCliente);
+        mnCadastrar.add(mnCadastrarEquipamento);
 
         mnCadastrarLocacao.setText("Registrar locação");
         mnCadastrarLocacao.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +83,7 @@ public class Menu extends javax.swing.JFrame {
                 mnCadastrarLocacaoActionPerformed(evt);
             }
         });
-        jMenu1.add(mnCadastrarLocacao);
+        mnCadastrar.add(mnCadastrarLocacao);
 
         mnCadastrarReserva.setText("Registrar Reserva");
         mnCadastrarReserva.addActionListener(new java.awt.event.ActionListener() {
@@ -111,111 +91,89 @@ public class Menu extends javax.swing.JFrame {
                 mnCadastrarReservaActionPerformed(evt);
             }
         });
-        jMenu1.add(mnCadastrarReserva);
+        mnCadastrar.add(mnCadastrarReserva);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mnCadastrar);
 
-        jMenu2.setText("Exibir");
+        mnExibir.setText("Exibir");
 
-        jMenuItem5.setText("Equipamentos");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        mnExibirEquipamento.setText("Equipamentos");
+        mnExibirEquipamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                mnExibirEquipamentoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        mnExibir.add(mnExibirEquipamento);
 
-        jMenuItem6.setText("Clientes");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        mnExibirReservas.setText("Reservas");
+        mnExibirReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                mnExibirReservasActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
+        mnExibir.add(mnExibirReservas);
 
-        jMenuItem7.setText("Reservas");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        mnExibirLocacao.setText("Locações");
+        mnExibirLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                mnExibirLocacaoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem7);
+        mnExibir.add(mnExibirLocacao);
 
-        jMenuItem8.setText("Locações");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(mnExibir);
+
+        mnRelatorio.setText("Relatórios");
+
+        mnRelatorioEquipamento.setText("Equipamentos");
+        mnRelatorioEquipamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                mnRelatorioEquipamentoActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem8);
+        mnRelatorio.add(mnRelatorioEquipamento);
 
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Relatórios");
-
-        jMenu4.setText("Equipamentos");
-
-        jMenuItem9.setText("Locados");
-        jMenu4.add(jMenuItem9);
-
-        jMenuItem10.setText("Danos");
-        jMenu4.add(jMenuItem10);
-
-        jMenu3.add(jMenu4);
-
-        jMenu5.setText("Reservas");
-
-        jMenuItem12.setText("Efetuadas");
-        jMenu5.add(jMenuItem12);
-
-        jMenuItem13.setText("Canceladas");
-        jMenu5.add(jMenuItem13);
-
-        jMenuItem14.setText("Em atraso");
-        jMenu5.add(jMenuItem14);
-
-        jMenu3.add(jMenu5);
-
-        jMenu6.setText("Locações");
-
-        jMenuItem15.setText("Efetuadas");
-        jMenu6.add(jMenuItem15);
-
-        jMenuItem16.setText("Atrasadas");
-        jMenu6.add(jMenuItem16);
-
-        jMenu3.add(jMenu6);
-
-        jMenu7.setText("Clientes");
-
-        jMenuItem17.setText("Todos");
-        jMenu7.add(jMenuItem17);
-
-        jMenuItem18.setText("Em Débito");
-        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+        mnRelatorioReserva.setText("Reservas");
+        mnRelatorioReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem18ActionPerformed(evt);
+                mnRelatorioReservaActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem18);
+        mnRelatorio.add(mnRelatorioReserva);
 
-        jMenu3.add(jMenu7);
+        mnRelatorioLocacao.setText("Locações");
+        mnRelatorioLocacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnRelatorioLocacaoActionPerformed(evt);
+            }
+        });
+        mnRelatorio.add(mnRelatorioLocacao);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(mnRelatorio);
 
-        jMenu8.setText("ADMIN");
+        mnAdmin.setText("ADMIN");
 
-        jMenu9.setText("Funcionarios");
+        mnAdminFunc.setText("Funcionarios");
 
-        jMenuItem19.setText("Cadastrar");
-        jMenu9.add(jMenuItem19);
+        mnAdminFuncCad.setText("Cadastrar");
+        mnAdminFuncCad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnAdminFuncCadActionPerformed(evt);
+            }
+        });
+        mnAdminFunc.add(mnAdminFuncCad);
 
-        jMenuItem20.setText("Exibir");
-        jMenu9.add(jMenuItem20);
+        mnAdminFuncExib.setText("Exibir");
+        mnAdminFuncExib.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnAdminFuncExibActionPerformed(evt);
+            }
+        });
+        mnAdminFunc.add(mnAdminFuncExib);
 
-        jMenu8.add(jMenu9);
+        mnAdmin.add(mnAdminFunc);
 
-        jMenuBar1.add(jMenu8);
+        jMenuBar1.add(mnAdmin);
 
         setJMenuBar(jMenuBar1);
 
@@ -233,7 +191,7 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void mnExibirEquipamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirEquipamentoActionPerformed
 
         BorderLayout bl = new BorderLayout();
 
@@ -245,11 +203,7 @@ public class Menu extends javax.swing.JFrame {
 
         MainPNL.updateUI();
 
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem18ActionPerformed
+    }//GEN-LAST:event_mnExibirEquipamentoActionPerformed
 
     private void mnCadastrarEquipamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarEquipamentoActionPerformed
 
@@ -263,24 +217,6 @@ public class Menu extends javax.swing.JFrame {
 
         MainPNL.updateUI();
     }//GEN-LAST:event_mnCadastrarEquipamentoActionPerformed
-
-    private void mnCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarClienteActionPerformed
-
-        BorderLayout bl = new BorderLayout();
-
-        bl.addLayoutComponent(new CadPessoa(), null);
-
-        MainPNL.setLayout(bl);
-        MainPNL.removeAll();
-        MainPNL.add(new CadPessoa());
-
-        MainPNL.updateUI();
-
-    }//GEN-LAST:event_mnCadastrarClienteActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void mnCadastrarLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarLocacaoActionPerformed
 
@@ -308,7 +244,8 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.updateUI();
     }//GEN-LAST:event_mnCadastrarReservaActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+    private void mnExibirLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirLocacaoActionPerformed
+
         BorderLayout bl = new BorderLayout();
 
         try {
@@ -324,9 +261,9 @@ public class Menu extends javax.swing.JFrame {
         }
 
 
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_mnExibirLocacaoActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void mnExibirReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirReservasActionPerformed
 
         BorderLayout bl = new BorderLayout();
 
@@ -338,7 +275,73 @@ public class Menu extends javax.swing.JFrame {
 
         MainPNL.updateUI();
 
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_mnExibirReservasActionPerformed
+
+    private void mnAdminFuncCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAdminFuncCadActionPerformed
+
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new CadPessoa(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new CadPessoa());
+
+        MainPNL.updateUI();
+
+    }//GEN-LAST:event_mnAdminFuncCadActionPerformed
+
+    private void mnAdminFuncExibActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnAdminFuncExibActionPerformed
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new SrcPessoa(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new SrcPessoa());
+
+        MainPNL.updateUI();
+    }//GEN-LAST:event_mnAdminFuncExibActionPerformed
+
+    private void mnRelatorioEquipamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioEquipamentoActionPerformed
+        
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new RelEquip(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new RelEquip());
+
+        MainPNL.updateUI();
+        
+    }//GEN-LAST:event_mnRelatorioEquipamentoActionPerformed
+
+    private void mnRelatorioReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioReservaActionPerformed
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new RelReserva(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new RelReserva());
+
+        MainPNL.updateUI();
+        
+    }//GEN-LAST:event_mnRelatorioReservaActionPerformed
+
+    private void mnRelatorioLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioLocacaoActionPerformed
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new RelLocacao(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new RelLocacao());
+
+        MainPNL.updateUI();
+        
+    }//GEN-LAST:event_mnRelatorioLocacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -377,35 +380,23 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel MainPNL;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem20;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
-    private javax.swing.JMenuItem mnCadastrarCliente;
+    private javax.swing.JMenu mnAdmin;
+    private javax.swing.JMenu mnAdminFunc;
+    private javax.swing.JMenuItem mnAdminFuncCad;
+    private javax.swing.JMenuItem mnAdminFuncExib;
+    private javax.swing.JMenu mnCadastrar;
     private javax.swing.JMenuItem mnCadastrarEquipamento;
     private javax.swing.JMenuItem mnCadastrarLocacao;
     private javax.swing.JMenuItem mnCadastrarReserva;
+    private javax.swing.JMenu mnExibir;
+    private javax.swing.JMenuItem mnExibirEquipamento;
+    private javax.swing.JMenuItem mnExibirLocacao;
+    private javax.swing.JMenuItem mnExibirReservas;
+    private javax.swing.JMenu mnRelatorio;
+    private javax.swing.JMenuItem mnRelatorioEquipamento;
+    private javax.swing.JMenuItem mnRelatorioLocacao;
+    private javax.swing.JMenuItem mnRelatorioReserva;
     // End of variables declaration//GEN-END:variables
 }
