@@ -39,6 +39,8 @@ public class SrcLocacao extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabLocacao = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
+        checkDano = new javax.swing.JCheckBox();
+        txtDano = new javax.swing.JTextField();
 
         tabLocacao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -57,6 +59,15 @@ public class SrcLocacao extends javax.swing.JPanel {
             }
         });
 
+        checkDano.setText("Dano");
+        checkDano.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkDanoActionPerformed(evt);
+            }
+        });
+
+        txtDano.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -67,6 +78,10 @@ public class SrcLocacao extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(checkDano)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDano, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -76,7 +91,10 @@ public class SrcLocacao extends javax.swing.JPanel {
                 .addGap(56, 56, 56)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5)
+                    .addComponent(checkDano)
+                    .addComponent(txtDano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -84,6 +102,17 @@ public class SrcLocacao extends javax.swing.JPanel {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void checkDanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDanoActionPerformed
+if (checkDano.isSelected()) {
+
+            txtDano.setEnabled(true);
+
+        } else {
+            txtDano.setEnabled(false);
+        }
+        
+    }//GEN-LAST:event_checkDanoActionPerformed
 
     private void fillTabAll() throws ParseException {
         LocacaoDBC locDB = new LocacaoDBC();
@@ -118,8 +147,10 @@ public class SrcLocacao extends javax.swing.JPanel {
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox checkDano;
     private javax.swing.JButton jButton5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabLocacao;
+    private javax.swing.JTextField txtDano;
     // End of variables declaration//GEN-END:variables
 }

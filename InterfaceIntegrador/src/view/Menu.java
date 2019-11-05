@@ -304,7 +304,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_mnAdminFuncExibActionPerformed
 
     private void mnRelatorioEquipamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioEquipamentoActionPerformed
-        
+
         BorderLayout bl = new BorderLayout();
 
         bl.addLayoutComponent(new RelEquip(), null);
@@ -314,7 +314,7 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.add(new RelEquip());
 
         MainPNL.updateUI();
-        
+
     }//GEN-LAST:event_mnRelatorioEquipamentoActionPerformed
 
     private void mnRelatorioReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioReservaActionPerformed
@@ -327,7 +327,7 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.add(new RelReserva());
 
         MainPNL.updateUI();
-        
+
     }//GEN-LAST:event_mnRelatorioReservaActionPerformed
 
     private void mnRelatorioLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRelatorioLocacaoActionPerformed
@@ -340,7 +340,7 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.add(new RelLocacao());
 
         MainPNL.updateUI();
-        
+
     }//GEN-LAST:event_mnRelatorioLocacaoActionPerformed
 
     /**

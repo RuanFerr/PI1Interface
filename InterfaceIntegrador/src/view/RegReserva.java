@@ -24,6 +24,16 @@ public class RegReserva extends javax.swing.JPanel {
         initComponents();
     }
 
+    public RegReserva(int id) {
+        initComponents();
+
+        btRegistrar.setText("Alterar");
+
+        this.id = id;
+    }
+
+    int id = -1;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,7 +44,7 @@ public class RegReserva extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel7 = new javax.swing.JLabel();
-        btnAno2 = new javax.swing.JComboBox<>();
+        btnAno = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         btnMes = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -49,10 +59,10 @@ public class RegReserva extends javax.swing.JPanel {
 
         jLabel7.setText("Ano");
 
-        btnAno2.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getAno()));
-        btnAno2.addActionListener(new java.awt.event.ActionListener() {
+        btnAno.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getAno()));
+        btnAno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAno2ActionPerformed(evt);
+                btnAnoActionPerformed(evt);
             }
         });
 
@@ -97,7 +107,7 @@ public class RegReserva extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnAno2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(26, 26, 26)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -134,7 +144,7 @@ public class RegReserva extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel7)
-                    .addComponent(btnAno2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbEquip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(88, 88, 88)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -148,9 +158,9 @@ public class RegReserva extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAno2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAno2ActionPerformed
+    private void btnAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnoActionPerformed
         btnMes.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getMes()));
-    }//GEN-LAST:event_btnAno2ActionPerformed
+    }//GEN-LAST:event_btnAnoActionPerformed
 
     private void btnMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesActionPerformed
         btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
@@ -164,9 +174,18 @@ public class RegReserva extends javax.swing.JPanel {
 
         if (!nomeResponsavel.getText().equals(null) & !CpfResp.getText().equals(null)) {
             if (testNumCPF(CpfResp.getText()) && control.cadastro.Pessoa.testCPF(CpfResp.getText())) {
-            
+
                 Reserva res = new Reserva();
+                String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
+                res.setDataHoraReserva(data);
+
+                res.setNomeResponsavel(nomeResponsavel.getText());
+                res.setCpfResp(Long.parseLong(CpfResp.getText()));
                 
+                res.setEquipamento(new Equipamento());
+
+                res.getEquipamento().setId(retornaId(cbEquip.getSelectedItem()));
+
             } else {
                 JOptionPane.showMessageDialog(null, "CPF Inválido");
             }
@@ -202,7 +221,7 @@ public class RegReserva extends javax.swing.JPanel {
 
         for (int i = 0; i < lista.size(); i++) {
 
-            nomes[i] = lista.get(i).getNome();
+            nomes[i] = lista.get(i).getNome() + " -- " + lista.get(i).getId();
 
         }
 
@@ -210,19 +229,31 @@ public class RegReserva extends javax.swing.JPanel {
     }
 
     private boolean testNumCPF(String CPF) {
-        boolean ok = false;
+        boolean ok;
         try {
             Long num = Long.parseLong(CPF);
             ok = true;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             ok = false;
         }
         return ok;
     }
+
+    private int retornaId(Object nEquip) {
+
+        String nEq = String.valueOf(nEquip);
+
+        int ind = nEq.lastIndexOf("--");
+        String strId = nEq.substring(ind + 3);
+
+        int ID = Integer.parseInt(strId);
+
+        return ID;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CpfResp;
     private javax.swing.JButton btRegistrar;
-    private javax.swing.JComboBox<String> btnAno2;
+    private javax.swing.JComboBox<String> btnAno;
     private javax.swing.JComboBox<Object> btnDia;
     private javax.swing.JComboBox<String> btnMes;
     private javax.swing.JComboBox<String> cbEquip;

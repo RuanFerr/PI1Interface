@@ -22,6 +22,16 @@ public class CadEquip extends javax.swing.JPanel {
         initComponents();
     }
 
+    public CadEquip(int id) {
+        initComponents();
+
+        btSalvar.setText("alterar");
+
+        this.id = id;
+
+    }
+    int id = -1;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,7 +49,7 @@ public class CadEquip extends javax.swing.JPanel {
         cMarca = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         cNumSerie = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btSalvar = new javax.swing.JButton();
 
         jLabel1.setText("Nome");
 
@@ -49,10 +59,10 @@ public class CadEquip extends javax.swing.JPanel {
 
         jLabel4.setText("Numero de Serie");
 
-        jButton1.setText("Cadastrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btSalvar.setText("Cadastrar");
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btSalvarActionPerformed(evt);
             }
         });
 
@@ -62,26 +72,23 @@ public class CadEquip extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cNome, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cNome, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cMarca)
-                                    .addComponent(cNumSerie, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cMarca)
+                            .addComponent(cNumSerie, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)))
+                    .addComponent(btSalvar)
+                    .addComponent(cDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -99,30 +106,53 @@ public class CadEquip extends javax.swing.JPanel {
                     .addComponent(cDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cNumSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(jButton1)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addComponent(btSalvar)
+                .addContainerGap(217, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+
         if (!testaCampos()) {
             if (testaNumSerie()) {
-                Equipamento eq = new Equipamento();
-                eq.setNome(cNome.getText());
-                eq.setDescricao(cDescricao.getText());
-                eq.setMarca(cMarca.getText());
-                eq.setNumSerie(Integer.parseInt(cNumSerie.getText()));
-                EquipamentoDBC bdEquip = new EquipamentoDBC();
-                bdEquip.insert(eq);
+                Object[] opcoes = {"Confirmar", "Cancelar"};
 
+                if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                        "Alterar Registro",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcoes,
+                        opcoes[0]) == 0) {
+
+                    Equipamento eq = new Equipamento();
+                    eq.setNome(cNome.getText());
+                    eq.setDescricao(cDescricao.getText());
+                    eq.setMarca(cMarca.getText());
+                    eq.setNumSerie(Integer.parseInt(cNumSerie.getText()));
+                    EquipamentoDBC bdEquip = new EquipamentoDBC();
+
+                    if (id == -1) {
+
+                        bdEquip.insert(eq);
+
+                    } else {
+                        
+                        bdEquip.update(eq);
+                        
+                    }
+                } else {
+                    
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Numero de serie inválido");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_btSalvarActionPerformed
 
     private boolean testaCampos() {
 
@@ -145,11 +175,11 @@ public class CadEquip extends javax.swing.JPanel {
         return test;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btSalvar;
     private javax.swing.JTextField cDescricao;
     private javax.swing.JTextField cMarca;
     private javax.swing.JTextField cNome;
     private javax.swing.JTextField cNumSerie;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
