@@ -47,6 +47,8 @@ public class CadPessoa extends javax.swing.JPanel {
 
         jLabel4.setText("Senha");
 
+        cbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "cargo", "gerente", "funcionario" }));
+
         jLabel5.setText("Cargo");
 
         jButton1.setText("Cadastrar");
