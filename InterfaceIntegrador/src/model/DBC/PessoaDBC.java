@@ -29,15 +29,13 @@ public class PessoaDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO Pessoa (nome, sobrenome, email, senha, cargo, nomeUsuario, CPF) values (?, ?, ?, ?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Pessoa (nome, email, senha, cargo, CPF) values (?, ?, ?, ?, ?, ?)");
 
             pst.setString(1, pss.getNome());
-            pst.setString(2, pss.getSobrenome());
-            pst.setString(3, pss.getEmail());
-            pst.setString(4, pss.getSenha());
-            pst.setString(5, pss.getCargo());
-            pst.setString(6, pss.getNomeUsuario());
-            pst.setString(7, String.valueOf(pss.getCpf()));
+            pst.setString(2, pss.getEmail());
+            pst.setString(3, pss.getSenha());
+            pst.setString(4, pss.getCargo());
+            pst.setString(5, String.valueOf(pss.getCpf()));
 
             pst.execute();
 
@@ -58,16 +56,16 @@ public class PessoaDBC {
 
         try {
 
-            pst = conn.prepareStatement("UPDATE Pessoa set nome = ?, sobrenome = ?, email = ?, senha = ?, cargo = ?, nomeUsuario = ?, CPF = ? where id = ?");
+            pst = conn.prepareStatement("UPDATE Pessoa set nome = ?, email = ?, senha = ?, cargo = ?, CPF = ? where id = ?");
 
             pst.setString(1, pss.getNome());
-            pst.setString(2, pss.getSobrenome());
-            pst.setString(3, pss.getEmail());
-            pst.setString(4, pss.getSenha());
-            pst.setString(5, pss.getCargo());
-            pst.setString(6, pss.getNomeUsuario());
-            pst.setString(7, String.valueOf(pss.getCpf()));
-            pst.setString(8, String.valueOf(pss.getId()));
+
+            pst.setString(2, pss.getEmail());
+            pst.setString(3, pss.getSenha());
+            pst.setString(4, pss.getCargo());
+
+            pst.setString(5, String.valueOf(pss.getCpf()));
+            pst.setString(6, String.valueOf(pss.getId()));
 
             pst.execute();
 
@@ -99,11 +97,11 @@ public class PessoaDBC {
 
                 Pessoa pss = new Pessoa();
                 pss.setNome(rs.getString("nome"));
-                pss.setSobrenome(rs.getString("sobrenome"));
+
                 pss.setEmail(rs.getString("email"));
                 pss.setSenha(rs.getString("senha"));
                 pss.setCargo(rs.getString("cargo"));
-                pss.setNomeUsuario(rs.getString("nomeUsuario"));
+
                 pss.setCpf(rs.getInt("CPF"));
                 pss.setId(rs.getInt("id"));
 

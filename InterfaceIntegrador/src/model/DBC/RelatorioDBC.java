@@ -34,19 +34,32 @@ public class RelatorioDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO relatorio (idDano, idLocacao, nomeResponsavel, CPFResponsavel, Situacao, idFuncionario, data) values (?, ?, ?, ?, ?, ?, ?)");
-            
-            pst.setInt(1, hist.getDano().getId());
-            pst.setInt(2, hist.getReserva().getIdReserva());
-            pst.setString(3, hist.getReserva().getNomeResponsavel());
-            pst.setInt(4, ( (int) hist.getReserva().getCpfResp()));
+            if (hist.getDano().getId() == -1) {
 
-            String data = hist.getReserva().getDataHoraReserva();
-            data = Reserva.verSituacao(data);
-            pst.setString(5, data);
-            pst.setInt(6, hist.getIdFunc());
-            pst.setString(7, control.reserva.Reserva.formatador.format(hist.getDataOperacao()));
+                pst = conn.prepareStatement("INSERT INTO relatorio (idLocacao, nomeResponsavel, CPFResponsavel, Situacao, idFuncionario, data) values (?, ?, ?, ?, ?, ?)");
+                pst.setInt(1, hist.getReserva().getIdReserva());
+                pst.setString(2, hist.getReserva().getNomeResponsavel());
+                pst.setInt(3, ((int) hist.getReserva().getCpfResp()));
 
+                String data = hist.getReserva().getDataHoraReserva();
+                data = Reserva.verSituacao(data);
+                pst.setString(4, data);
+                pst.setInt(5, hist.getIdFunc());
+                pst.setString(6, control.reserva.Reserva.formatador.format(hist.getDataOperacao()));
+
+            } else {
+                pst = conn.prepareStatement("INSERT INTO relatorio (idDano, idLocacao, nomeResponsavel, CPFResponsavel, Situacao, idFuncionario, data) values (?, ?, ?, ?, ?, ?, ?)");
+                pst.setInt(1, hist.getDano().getId());
+                pst.setInt(2, hist.getReserva().getIdReserva());
+                pst.setString(3, hist.getReserva().getNomeResponsavel());
+                pst.setInt(4, ((int) hist.getReserva().getCpfResp()));
+
+                String data = hist.getReserva().getDataHoraReserva();
+                data = Reserva.verSituacao(data);
+                pst.setString(5, data);
+                pst.setInt(6, hist.getIdFunc());
+                pst.setString(7, control.reserva.Reserva.formatador.format(hist.getDataOperacao()));
+            }
             pst.execute();
 
             JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
@@ -74,7 +87,7 @@ public class RelatorioDBC {
             pst.setInt(1, hist.getDano().getId());
             pst.setInt(2, hist.getReserva().getIdReserva());
             pst.setString(3, hist.getReserva().getNomeResponsavel());
-            pst.setInt(4, ( (int) hist.getReserva().getCpfResp()));
+            pst.setInt(4, ((int) hist.getReserva().getCpfResp()));
             String data = hist.getReserva().getDataHoraReserva();
 
             pst.setString(5, Reserva.verSituacao(data));

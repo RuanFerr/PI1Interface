@@ -5,6 +5,12 @@
  */
 package view;
 
+import control.cadastro.Pessoa;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import model.DBC.PessoaDBC;
+
 /**
  *
  * @author Kelli
@@ -37,7 +43,7 @@ public class CadPessoa extends javax.swing.JPanel {
         cCPF = new javax.swing.JTextField();
         cSenha = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btCad = new javax.swing.JButton();
 
         jLabel1.setText("Nome");
 
@@ -51,7 +57,12 @@ public class CadPessoa extends javax.swing.JPanel {
 
         jLabel5.setText("Cargo");
 
-        jButton1.setText("Cadastrar");
+        btCad.setText("Cadastrar");
+        btCad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -70,7 +81,7 @@ public class CadPessoa extends javax.swing.JPanel {
                         .addComponent(cCPF))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
-                        .addComponent(jButton1))
+                        .addComponent(btCad))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
@@ -105,19 +116,87 @@ public class CadPessoa extends javax.swing.JPanel {
                     .addComponent(cEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btCad)
                 .addGap(80, 80, 80))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadActionPerformed
+        if (testaCampos()) {
 
+            if (testaEmail()) {
+
+                if (testNumCPF(cCPF.getText()) && control.cadastro.Pessoa.testCPF(cCPF.getText())) {
+
+                    Pessoa pss = new Pessoa();
+
+                    pss.setCargo((String) cbCargo.getSelectedItem());
+                    pss.setNome(cNome.getText());
+                    pss.setCpf(Long.parseLong(cCPF.getText()));
+                    pss.setEmail(cEmail.getText());
+                    pss.setSenha(cSenha.getText());
+                    PessoaDBC pssDB = new PessoaDBC();
+                    pssDB.insert(pss);
+                    
+                } else {
+                    JOptionPane.showMessageDialog(null, "CPF Inválido");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Email indisponível");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "preencha todos os campos");
+        }
+    }//GEN-LAST:event_btCadActionPerformed
+
+    private boolean testaCampos() {
+
+        boolean nome = !this.cNome.getText().equals("");
+
+        boolean email = !this.cEmail.getText().equals("");
+        boolean senha = !this.cSenha.getText().equals("");
+        boolean cpf = !this.cCPF.getText().equals("");
+        boolean cargo = !this.cbCargo.getSelectedItem().equals("Cargo");
+
+        return (nome && email && senha && cpf && cargo);
+    }
+
+    private boolean testaEmail() {
+
+        PessoaDBC pessDB = new PessoaDBC();
+        List<Pessoa> lista = pessDB.select();
+        boolean valid = true;
+
+        for (int i = 0; i < lista.size(); i++) {
+
+            Pessoa p = lista.get(i);
+            if (p.getEmail().equals(cEmail.getText())) {
+                valid = false;
+                i = lista.size();
+            }
+        }
+
+        return valid;
+
+    }
+
+    private boolean testNumCPF(String CPF) {
+        boolean ok;
+        try {
+            Long num = Long.parseLong(CPF);
+            ok = true;
+        } catch (NumberFormatException e) {
+            ok = false;
+        }
+        return ok;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCad;
     private javax.swing.JTextField cCPF;
     private javax.swing.JTextField cEmail;
     private javax.swing.JTextField cNome;
     private javax.swing.JTextField cSenha;
     private javax.swing.JComboBox<String> cbCargo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

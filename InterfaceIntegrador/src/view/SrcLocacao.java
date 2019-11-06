@@ -13,9 +13,13 @@ import control.reserva.Locacao;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.DBC.DanoDBC;
 import model.DBC.LocacaoDBC;
+import model.DBC.RelatorioDBC;
 
 /**
  *
@@ -135,9 +139,21 @@ public class SrcLocacao extends javax.swing.JPanel {
 
                 hist.setDano(danoDB.selectLast());
 
-                
+            } else {
+                hist.setDano(new Dano());
+                hist.getDano().setId(-1);
             }
 
+            RelatorioDBC relDB = new RelatorioDBC();
+
+            try {
+                relDB.insert(hist);
+            } catch (ParseException ex) {
+                Logger.getLogger(SrcLocacao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma Locação");
         }
 
     }//GEN-LAST:event_btRegDevolActionPerformed
@@ -166,6 +182,7 @@ public class SrcLocacao extends javax.swing.JPanel {
                 loc.getNomeResponsavel(),
                 loc.getDataLocacao(),
                 testSituacao(loc.getDataLocacao())};
+            dtm.addRow(row);
         }
 
     }
