@@ -6,8 +6,10 @@
 package view;
 
 import control.reserva.Equipamento;
+import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import model.DBC.EquipamentoDBC;
+import static view.Menu.MainPNL;
 
 /**
  *
@@ -23,12 +25,21 @@ public class CadEquip extends javax.swing.JPanel {
     }
 
     public CadEquip(int id) {
+
         initComponents();
 
         btSalvar.setText("alterar");
 
         this.id = id;
 
+        EquipamentoDBC equipDB = new EquipamentoDBC();
+
+        Equipamento e = equipDB.selectEquip(id);
+
+        cNome.setText(e.getNome());
+        cMarca.setText(e.getMarca());
+        cNumSerie.setText(String.valueOf(e.getNumSerie()));
+        cDescricao.setText(e.getDescricao());
     }
     int id = -1;
 
@@ -115,35 +126,50 @@ public class CadEquip extends javax.swing.JPanel {
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
 
         if (!testaCampos()) {
-            if (testaNumSerie()) {
-                Object[] opcoes = {"Confirmar", "Cancelar"};
 
-                if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
-                        "Alterar Registro",
-                        JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        opcoes,
-                        opcoes[0]) == 0) {
+            if (Equipamento.testaNumSerieUnico(cNumSerie.getText())) {
 
-                    Equipamento eq = new Equipamento();
-                    eq.setNome(cNome.getText());
-                    eq.setDescricao(cDescricao.getText());
-                    eq.setMarca(cMarca.getText());
-                    eq.setNumSerie(Integer.parseInt(cNumSerie.getText()));
-                    EquipamentoDBC bdEquip = new EquipamentoDBC();
+                Equipamento eq = new Equipamento();
+                eq.setNome(cNome.getText());
+                eq.setDescricao(cDescricao.getText());
+                eq.setMarca(cMarca.getText());
+                eq.setNumSerie(Integer.parseInt(cNumSerie.getText()));
 
-                    if (id == -1) {
+                EquipamentoDBC bdEquip = new EquipamentoDBC();
 
-                        bdEquip.insert(eq);
+                if (id == -1) {
+
+                    bdEquip.insert(eq);
+                    limpaCampos();
+
+                } else {
+
+                    eq.setId(id);
+
+                    Object[] opcoes = {"Confirmar", "Cancelar"};
+                    if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                            "Alterar Registro",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            opcoes,
+                            opcoes[0]) == 0) {
+
+                        bdEquip.update(eq);
+
+                        BorderLayout bl = new BorderLayout();
+
+                        bl.addLayoutComponent(new SrcEquip(), null);
+
+                        MainPNL.setLayout(bl);
+                        MainPNL.removeAll();
+                        MainPNL.add(new SrcEquip(true));
+
+                        MainPNL.updateUI();
 
                     } else {
-                        
-                        bdEquip.update(eq);
-                        
+
                     }
-                } else {
-                    
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Numero de serie inválido");
@@ -164,16 +190,15 @@ public class CadEquip extends javax.swing.JPanel {
         return (TNome || TMarca || TDescricao || TNumSerie);
     }
 
-    private boolean testaNumSerie() {
-        boolean test = false;
-        try {
-            int num = Integer.parseInt(cNumSerie.getText());
-            test = true;
-        } catch (NumberFormatException e) {
-            test = false;
-        }
-        return test;
+    private void limpaCampos() {
+
+        cNome.setText("");
+        cDescricao.setText("");
+        cNumSerie.setText("");
+        cMarca.setText("");
+
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btSalvar;
     private javax.swing.JTextField cDescricao;

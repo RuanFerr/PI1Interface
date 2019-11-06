@@ -130,4 +130,36 @@ public class DanoDBC {
 
     }
 
+    public Dano selectLast() {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+        Dano dano = new Dano();
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Dano order by idDano desc limit 1");
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                dano.setDano(rs.getString("descricao"));
+                dano.setId(rs.getInt("idDano"));
+                dano.setEquip(new Equipamento());
+                dano.getEquip().setId(rs.getInt("idEquipamento"));
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return dano;
+
+    }
+
 }

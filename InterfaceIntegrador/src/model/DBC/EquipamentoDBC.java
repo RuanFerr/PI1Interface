@@ -116,7 +116,7 @@ public class EquipamentoDBC {
 
         try {
 
-            pst = conn.prepareStatement("DELETE FROM Equipamento WHERE id = ?");
+            pst = conn.prepareStatement("DELETE FROM Equipamento WHERE idEquipamento = ?");
             pst.setInt(1, equipamento.getId());
 
             pst.execute();
@@ -152,7 +152,7 @@ public class EquipamentoDBC {
             rs = pst.executeQuery();
 
             while (rs.next()) {
-                
+
                 if (rs.getString("dataHoraReserva").equals(data)) {
                     Equipamento equip = new Equipamento(
                             rs.getString("nome"),
@@ -161,7 +161,7 @@ public class EquipamentoDBC {
                             rs.getInt("numSerie"));
                     equip.setId(rs.getInt("idEquipamento"));
                     lista.add(equip);
-                    
+
                 }
             }
 
@@ -175,6 +175,40 @@ public class EquipamentoDBC {
 
     }
 
-    
-    
+    public Equipamento selectEquip(int id) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+
+        Equipamento equip = new Equipamento();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Equipamento where idEquipamento = ?");
+            pst.setInt(1, id);
+
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                equip.setId(id);
+                equip.setNome(rs.getString("nome"));
+                equip.setMarca(rs.getString("marca"));
+                equip.setDescricao(rs.getString("descricao"));
+                equip.setNumSerie(rs.getInt("numSerie"));
+
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return equip;
+
+    }
+
 }

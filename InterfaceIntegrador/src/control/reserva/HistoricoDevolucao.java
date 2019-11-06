@@ -7,34 +7,34 @@ package control.reserva;
 
 import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Kelli
  */
 public class HistoricoDevolucao {
+
     private Reserva reserva;
+    private Locacao locacao;
     private int idHistorico;
-    private String operacao;
+    private String situacao;
     private Date dataOperacao;
     private String nomeFunc;
     private int idFunc;
-
     private Dano dano;
 
     public HistoricoDevolucao() {
 
     }
 
-    public HistoricoDevolucao(Reserva reserva, String operacao, Date dataOperacao, String nomeFunc) {
-
-        this.reserva = reserva;
-        this.nomeFunc = nomeFunc;
-        this.dataOperacao = dataOperacao;
-        this.operacao = operacao;
-
+    public Reserva getReserva() {
+        return reserva;
     }
+
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
+    }
+
 
     public int getIdHistorico() {
         return idHistorico;
@@ -54,20 +54,20 @@ public class HistoricoDevolucao {
 
     private static ArrayList<HistoricoDevolucao> historicoDevolucao = new ArrayList();
 
-    public Reserva getReserva() {
-        return reserva;
+    public Locacao getLocacao() {
+        return locacao;
     }
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
     }
 
-    public String getOperacao() {
-        return operacao;
+    public String getSituacao() {
+        return situacao;
     }
 
-    public void setOperacao(String operacao) {
-        this.operacao = operacao;
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
 
     public Date getDataOperacao() {
@@ -102,7 +102,7 @@ public class HistoricoDevolucao {
         this.dano = dano;
     }
 
-    public static boolean registrarDevolucao(Reserva res) {
+    /* public static boolean registrarDevolucao(Reserva res) {
 
         boolean resp = false;
 
@@ -119,11 +119,10 @@ public class HistoricoDevolucao {
                 resp = true;
             }
 
-        };
+        }
 
         return resp;
-    }
-
+    }*/
     public void listarDadosDevolucao() {
 
     }

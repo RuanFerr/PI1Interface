@@ -30,7 +30,7 @@ public class LocacaoDBC {
             pst.setString(1, loc.getDataLocacao());
             pst.setInt(2, loc.getIdEquipamento());
             pst.setString(3, loc.getNomeResponsavel());
-            pst.setLong(4, loc.getCPFResponsavel());
+            pst.setString(4, String.valueOf(loc.getCPFResponsavel()));
             pst.setLong(5, loc.getIdFuncionarioLocacao());
 
             pst.execute();
@@ -57,7 +57,7 @@ public class LocacaoDBC {
             pst.setString(1, loc.getDataLocacao());
             pst.setInt(2, loc.getIdEquipamento());
             pst.setString(3, loc.getNomeResponsavel());
-            pst.setLong(4, loc.getCPFResponsavel());
+            pst.setString(4, String.valueOf(loc.getCPFResponsavel()));
             pst.setInt(5, loc.getIdFuncionarioLocacao());
             pst.setInt(6, loc.getIdLocacao());
 
@@ -84,7 +84,7 @@ public class LocacaoDBC {
 
         try {
 
-            pst = conn.prepareStatement("SELECT * from Reserva");
+            pst = conn.prepareStatement("SELECT * from Locacao");
             rs = pst.executeQuery();
 
             while (rs.next()) {
@@ -93,7 +93,7 @@ public class LocacaoDBC {
                 loc.setDataLocacao(rs.getString("dataLocacao"));
                 loc.setIdLocacao(rs.getInt("idLocacao"));
                 loc.setNomeResponsavel(rs.getString("nomeResponsavel"));
-                loc.setCPFResponsavel(rs.getInt("CPFResponsavel"));
+                loc.setCPFResponsavel(Long.parseLong(rs.getString("CPFResponsavel")));
                 loc.setIdFuncionarioLocacao(rs.getInt("idFuncionario"));
                 loc.setIdEquipamento(rs.getInt("idEquipamento"));
                 lista.add(loc);
@@ -129,6 +129,43 @@ public class LocacaoDBC {
         } finally {
             ConnectionFactory.closeConnection(conn, pst);
         }
+
+    }
+
+    public Locacao selectLocacao(int id) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+
+        Locacao loc = new Locacao();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Locacao where idLocacao = ?");
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                loc.setDataLocacao(rs.getString("dataLocacao"));
+                loc.setIdLocacao(rs.getInt("idLocacao"));
+                loc.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                loc.setCPFResponsavel(Long.parseLong(rs.getString("CPFResponsavel")));
+                loc.setIdFuncionarioLocacao(rs.getInt("idFuncionario"));
+                loc.setIdEquipamento(rs.getInt("idEquipamento"));
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return loc;
 
     }
 }

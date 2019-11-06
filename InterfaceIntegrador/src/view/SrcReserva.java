@@ -22,7 +22,9 @@ public class SrcReserva extends javax.swing.JPanel {
      */
     public SrcReserva() {
         initComponents();
+        
         fillTabAll();
+        
     }
 
     /**

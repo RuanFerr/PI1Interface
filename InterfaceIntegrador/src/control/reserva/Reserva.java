@@ -16,6 +16,17 @@ public class Reserva {
 
     public static SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 
+    public Reserva() {
+
+    }
+
+    public Reserva(Equipamento item, String dataHora, String nomeResponsavel, long cpfResp) {
+        this.dataHoraReserva = dataHora;
+        this.equipamento = item;
+        this.nomeResponsavel = nomeResponsavel;
+        this.CpfResp = cpfResp;
+    }
+
     public String getSituacao() {
         return situacao;
     }
@@ -48,17 +59,6 @@ public class Reserva {
 
     public static void setLogReservas(ArrayList<Reserva> logReservas) {
         Reserva.logReservas = logReservas;
-    }
-
-    public Reserva() {
-
-    }
-
-    public Reserva(Equipamento item, String dataHora, String nomeResponsavel, long cpfResp) {
-        this.dataHoraReserva = dataHora;
-        this.equipamento = item;
-        this.nomeResponsavel = nomeResponsavel;
-        this.CpfResp = cpfResp;
     }
 
     public int getIdReserva() {
@@ -147,7 +147,6 @@ public class Reserva {
         }
         return nomes;
     }*/
-
     public String getNomeResponsavel() {
         return nomeResponsavel;
     }

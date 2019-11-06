@@ -6,9 +6,12 @@
 package view;
 
 import control.reserva.Equipamento;
+import java.awt.BorderLayout;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.DBC.EquipamentoDBC;
+import static view.Menu.MainPNL;
 
 /**
  *
@@ -30,6 +33,7 @@ public class SrcEquip extends javax.swing.JPanel {
         initComponents();
 
         fillTabAll();
+
         pnExibir.setEnabled(false);
 
         pnExibir.setVisible(false);
@@ -57,8 +61,8 @@ public class SrcEquip extends javax.swing.JPanel {
         btnAno = new javax.swing.JComboBox<>();
         btnMes = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btAlterar = new javax.swing.JButton();
+        btDeletar = new javax.swing.JButton();
 
         tabEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -143,14 +147,19 @@ public class SrcEquip extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("Alterar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btAlterar.setText("Alterar");
+        btAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btAlterarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Deletar");
+        btDeletar.setText("Deletar");
+        btDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDeletarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -172,9 +181,9 @@ public class SrcEquip extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(pnExibir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -193,8 +202,8 @@ public class SrcEquip extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btAlterar)
+                    .addComponent(btDeletar))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -216,11 +225,14 @@ public class SrcEquip extends javax.swing.JPanel {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
         EquipamentoDBC EquipDB = new EquipamentoDBC();
+
         String opcao = (String) cbExibir.getSelectedItem();
         if (opcao.equals("Todos")) {
             fillTabAll();
         } else {
+
             String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
+
             List<Equipamento> lista = EquipDB.selectComData(opcao, data);
 
             DefaultTableModel dtm = (DefaultTableModel) tabEquip.getModel();
@@ -261,9 +273,52 @@ public class SrcEquip extends javax.swing.JPanel {
 
     }//GEN-LAST:event_cbExibirActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
+
+        if (tabEquip.getSelectedRow() != -1) {
+
+            BorderLayout bl = new BorderLayout();
+
+            bl.addLayoutComponent(new CadEquip(), null);
+
+            MainPNL.setLayout(bl);
+            MainPNL.removeAll();
+
+            MainPNL.add(new CadEquip(Integer.parseInt((String) tabEquip.getValueAt(tabEquip.getSelectedRow(), 0))));
+
+            MainPNL.updateUI();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma Ocorrência");
+        }
+
+    }//GEN-LAST:event_btAlterarActionPerformed
+
+    private void btDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDeletarActionPerformed
+        if (tabEquip.getSelectedRow() != -1) {
+
+            Object[] opcoes = {"Confirmar", "Cancelar"};
+            if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                    "Alterar Registro",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcoes,
+                    opcoes[0]) == 0) {
+
+                EquipamentoDBC equipDB = new EquipamentoDBC();
+                Equipamento equip = new Equipamento();
+
+                equip.setId(Integer.valueOf((String) tabEquip.getValueAt(tabEquip.getSelectedRow(), 0)));
+
+                equipDB.delete(equip);
+                
+            } else {
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma Ocorrência");
+        }
+    }//GEN-LAST:event_btDeletarActionPerformed
 
     public String[] retornaDias() {
 
@@ -308,13 +363,13 @@ public class SrcEquip extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAlterar;
+    private javax.swing.JButton btDeletar;
     private javax.swing.JComboBox<String> btnAno;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JComboBox<Object> btnDia;
     private javax.swing.JComboBox<String> btnMes;
     private javax.swing.JComboBox<String> cbExibir;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

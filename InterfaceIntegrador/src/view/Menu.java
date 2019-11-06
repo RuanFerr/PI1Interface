@@ -21,6 +21,10 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        if (!(control.login.Login.getSessao().getCargo().equals("gerente"))) {
+            mnAdmin.setEnabled(false);
+            mnAdmin.setVisible(false);
+        }
     }
 
     /**
@@ -37,8 +41,8 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnCadastrar = new javax.swing.JMenu();
         mnCadastrarEquipamento = new javax.swing.JMenuItem();
-        mnCadastrarLocacao = new javax.swing.JMenuItem();
         mnCadastrarReserva = new javax.swing.JMenuItem();
+        mnCadastrarLocacao = new javax.swing.JMenuItem();
         mnExibir = new javax.swing.JMenu();
         mnExibirEquipamento = new javax.swing.JMenuItem();
         mnExibirReservas = new javax.swing.JMenuItem();
@@ -77,14 +81,6 @@ public class Menu extends javax.swing.JFrame {
         });
         mnCadastrar.add(mnCadastrarEquipamento);
 
-        mnCadastrarLocacao.setText("Registrar locação");
-        mnCadastrarLocacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnCadastrarLocacaoActionPerformed(evt);
-            }
-        });
-        mnCadastrar.add(mnCadastrarLocacao);
-
         mnCadastrarReserva.setText("Registrar Reserva");
         mnCadastrarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,6 +88,14 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         mnCadastrar.add(mnCadastrarReserva);
+
+        mnCadastrarLocacao.setText("Registrar locação");
+        mnCadastrarLocacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnCadastrarLocacaoActionPerformed(evt);
+            }
+        });
+        mnCadastrar.add(mnCadastrarLocacao);
 
         jMenuBar1.add(mnCadastrar);
 
@@ -233,6 +237,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_mnCadastrarLocacaoActionPerformed
 
     private void mnCadastrarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarReservaActionPerformed
+
         BorderLayout bl = new BorderLayout();
 
         bl.addLayoutComponent(new RegReserva(), null);
@@ -242,6 +247,7 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.add(new RegReserva());
 
         MainPNL.updateUI();
+        
     }//GEN-LAST:event_mnCadastrarReservaActionPerformed
 
     private void mnExibirLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirLocacaoActionPerformed

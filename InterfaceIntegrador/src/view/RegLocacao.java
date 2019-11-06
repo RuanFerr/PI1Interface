@@ -26,11 +26,12 @@ public class RegLocacao extends javax.swing.JPanel {
     public RegLocacao() {
         initComponents();
     }
-    
+
     public RegLocacao(boolean buscar) {
-        
+
         initComponents();
         fillTab();
+
     }
 
     /**
@@ -113,72 +114,74 @@ public class RegLocacao extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegActionPerformed
-        
+
         if (testaCampos()) {
-            
+
             if (testaCpfNumeros() && control.cadastro.Pessoa.testCPF(cCPFResp.getText())) {
-                
+
                 Locacao loc = new Locacao();
                 loc.setCPFResponsavel(Long.parseLong(cCPFResp.getText()));
                 Date data;
                 data = new Date();
                 String dt = control.reserva.Reserva.formatador.format(data);
                 loc.setDataLocacao(dt);
-                
+
                 LocacaoDBC locDB = new LocacaoDBC();
                 locDB.insert(loc);
                 ReservaDBC resDB = new ReservaDBC();
                 Reserva res = new Reserva();
                 res.setIdReserva((int) tabLocacao.getValueAt(tabLocacao.getSelectedRow(), 3));
                 resDB.delete(res);
-                
+
             } else {
+                
                 JOptionPane.showMessageDialog(null, "CPF Inválido");
+                
             }
         } else {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos");
         }
     }//GEN-LAST:event_btRegActionPerformed
-    
+
     public boolean testaCampos() {
-        
+
         boolean teste = false;
-        
-        if (cCPFResp.getText().equals("") && cNomeResp.getText().equals("")) {
-            
+
+        if (!cCPFResp.getText().equals("") && !cNomeResp.getText().equals("")) {
+
             teste = true;
-            
+
         }
         return teste;
     }
-    
+
     public boolean testaCpfNumeros() {
-        
+
         try {
-            
+
             double num = Double.parseDouble(cCPFResp.getText());
             return true;
-            
+
         } catch (NumberFormatException e) {
-            
+
             return false;
-            
+
         }
-        
+
     }
-    
+
     private void fillTab() {
-        
+
         DefaultTableModel dtm = (DefaultTableModel) tabLocacao.getModel();
         dtm.setNumRows(0);
         Date dthj = new Date();
         String datahj = control.reserva.Reserva.formatador.format(dthj);
-        
+
         ReservaDBC resDB = new ReservaDBC();
-        
+
         List<Reserva> lista = resDB.selectData(datahj);
         for (Reserva r : lista) {
-            
+
             Object[] row = {r.getNomeResponsavel(),
                 r.getEquipamento().getNome(),
                 r.getDataHoraReserva(),

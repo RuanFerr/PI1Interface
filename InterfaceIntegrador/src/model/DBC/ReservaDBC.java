@@ -35,7 +35,7 @@ public class ReservaDBC {
             pst.setString(1, res.getDataHoraReserva());
             pst.setInt(2, res.getEquipamento().getId());
             pst.setString(3, res.getNomeResponsavel());
-            pst.setLong(4, res.getCpfResp());
+            pst.setString(4, String.valueOf(res.getCpfResp()));
 
             pst.execute();
 
@@ -56,12 +56,12 @@ public class ReservaDBC {
 
         try {
 
-            pst = conn.prepareStatement("UPDATE Reserva set dataHoraReserva = ?, idEquipamento = ?, nomeResponsavel = ?, cpfResponsavel = ? where id = ?");
+            pst = conn.prepareStatement("UPDATE Reserva set dataHoraReserva = ?, idEquipamento = ?, nomeResponsavel = ?, CPFResponsavel = ? where id = ?");
 
             pst.setString(1, res.getDataHoraReserva());
             pst.setInt(2, res.getEquipamento().getId());
             pst.setString(3, res.getNomeResponsavel());
-            pst.setLong(4, res.getCpfResp());
+            pst.setString(4, String.valueOf(res.getCpfResp()));
             pst.setInt(5, res.getIdReserva());
 
             pst.execute();
@@ -98,7 +98,7 @@ public class ReservaDBC {
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
-                res.setCpfResp(rs.getInt("CPFResponsavel"));
+                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
                 lista.add(res);
 
             }
@@ -154,11 +154,12 @@ public class ReservaDBC {
             while (rs.next()) {
 
                 Reserva res = new Reserva();
-                res.setDataHoraReserva(rs.getString("dataLocacao"));
-                res.setIdReserva(rs.getInt("idLocacao"));
+                res.setDataHoraReserva(rs.getString("dataHoraReserva"));
+                res.setIdReserva(rs.getInt("idReserva"));
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
-                res.setCpfResp(rs.getInt("CPFResponsavel"));
-
+                res.setEquipamento(new Equipamento());
+                res.getEquipamento().setId(rs.getInt("idEquipamento"));
+                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
                 lista.add(res);
 
             }
@@ -172,7 +173,7 @@ public class ReservaDBC {
         return lista;
 
     }
-    
+
     public List<Reserva> selectComData(String data) {
 
         Connection conn = ConnectionFactory.getConnection();
@@ -193,11 +194,11 @@ public class ReservaDBC {
 
                 Reserva res = new Reserva();
                 res.setDataHoraReserva(rs.getString("dataHoraReserva"));
-                res.setIdReserva(rs.getInt("idResetva"));
+                res.setIdReserva(rs.getInt("idReserva"));
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
-                res.setCpfResp(rs.getInt("CPFResponsavel"));
+                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
                 lista.add(res);
 
             }
@@ -209,6 +210,43 @@ public class ReservaDBC {
         }
 
         return lista;
+
+    }
+
+    public Reserva selectReserva(int id) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+
+        Reserva res = new Reserva();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Reserva where id = ?");
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                res.setDataHoraReserva(rs.getString("dataHoraReserva"));
+                res.setIdReserva(rs.getInt("id"));
+                res.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                res.setEquipamento(new Equipamento());
+                res.getEquipamento().setId(rs.getInt("idEquipamento"));
+                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return res;
 
     }
 

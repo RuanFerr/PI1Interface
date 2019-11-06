@@ -7,9 +7,14 @@ package view;
 
 import control.reserva.Equipamento;
 import control.reserva.Reserva;
+import java.awt.BorderLayout;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import model.DBC.EquipamentoDBC;
+import model.DBC.ReservaDBC;
+import static view.Menu.MainPNL;
 
 /**
  *
@@ -24,12 +29,37 @@ public class RegReserva extends javax.swing.JPanel {
         initComponents();
     }
 
-    public RegReserva(int id) {
+    public RegReserva(int id) throws ParseException {
         initComponents();
 
         btRegistrar.setText("Alterar");
 
         this.id = id;
+
+        ReservaDBC resDB = new ReservaDBC();
+        Reserva res = resDB.selectReserva(id);
+
+        Date data = control.reserva.Reserva.formatador.parse(res.getDataHoraReserva());
+
+        btnAno.setSelectedItem(data.getYear());
+        btnMes.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getMes()));
+        btnMes.setSelectedItem(data.getMonth());
+        btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
+        btnDia.setSelectedItem(data.getDay());
+
+        EquipamentoDBC eqDB = new EquipamentoDBC();
+        Equipamento equip = eqDB.selectEquip(res.getEquipamento().getId());
+
+        cbEquip.setModel(new javax.swing.DefaultComboBoxModel<>(retornaNomeItem()));
+
+        String nomeItem = equip.getNome() + " -- " + equip.getId();
+
+        cbEquip.setSelectedItem(nomeItem);
+
+        nomeResponsavel.setText(res.getNomeResponsavel());
+
+        CpfResp.setText(String.valueOf(res.getCpfResp()));
+
     }
 
     int id = -1;
@@ -172,20 +202,66 @@ public class RegReserva extends javax.swing.JPanel {
 
     private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
 
-        if (!nomeResponsavel.getText().equals(null) & !CpfResp.getText().equals(null)) {
+        if (!nomeResponsavel.getText().isEmpty() & !CpfResp.getText().isEmpty()) {
+
             if (testNumCPF(CpfResp.getText()) && control.cadastro.Pessoa.testCPF(CpfResp.getText())) {
 
                 Reserva res = new Reserva();
                 String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
+
                 res.setDataHoraReserva(data);
 
                 res.setNomeResponsavel(nomeResponsavel.getText());
+
                 res.setCpfResp(Long.parseLong(CpfResp.getText()));
-                
+
                 res.setEquipamento(new Equipamento());
 
                 res.getEquipamento().setId(retornaId(cbEquip.getSelectedItem()));
 
+                ReservaDBC resDB = new ReservaDBC();
+
+                if (id == -1) {
+
+                    resDB.insert(res);
+
+                    BorderLayout bl = new BorderLayout();
+
+                    bl.addLayoutComponent(new RegReserva(), null);
+
+                    MainPNL.setLayout(bl);
+                    MainPNL.removeAll();
+                    MainPNL.add(new RegReserva());
+
+                    MainPNL.updateUI();
+
+                } else {
+
+                    Object[] opcoes = {"Confirmar", "Cancelar"};
+                    if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                            "Alterar Registro",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            opcoes,
+                            opcoes[0]) == 0) {
+
+                        res.setIdReserva(id);
+                        resDB.update(res);
+
+                        BorderLayout bl = new BorderLayout();
+
+                        bl.addLayoutComponent(new SrcReserva(), null);
+
+                        MainPNL.setLayout(bl);
+                        MainPNL.removeAll();
+                        MainPNL.add(new SrcReserva());
+
+                        MainPNL.updateUI();
+
+                    } else {
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "CPF Inválido");
             }

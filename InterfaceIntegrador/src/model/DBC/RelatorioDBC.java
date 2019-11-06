@@ -34,8 +34,8 @@ public class RelatorioDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO relatorio (idDano, idReserva, nomePessoa, CPFPessoa, Situacao, idFuncionario, data) values (?, ?, ?, ?, ?, ?, ?)");
-
+            pst = conn.prepareStatement("INSERT INTO relatorio (idDano, idLocacao, nomeResponsavel, CPFResponsavel, Situacao, idFuncionario, data) values (?, ?, ?, ?, ?, ?, ?)");
+            
             pst.setInt(1, hist.getDano().getId());
             pst.setInt(2, hist.getReserva().getIdReserva());
             pst.setString(3, hist.getReserva().getNomeResponsavel());
