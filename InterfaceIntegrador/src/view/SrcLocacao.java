@@ -5,11 +5,16 @@
  */
 package view;
 
+import com.itextpdf.text.pdf.PdfName;
+import control.reserva.Dano;
+import control.reserva.Equipamento;
+import control.reserva.HistoricoDevolucao;
 import control.reserva.Locacao;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import model.DBC.DanoDBC;
 import model.DBC.LocacaoDBC;
 
 /**
@@ -20,6 +25,7 @@ public class SrcLocacao extends javax.swing.JPanel {
 
     /**
      * Creates new form SrcLocacao
+     *
      * @throws java.text.ParseException
      */
     public SrcLocacao() throws ParseException {
@@ -38,7 +44,7 @@ public class SrcLocacao extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabLocacao = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
+        btRegDevol = new javax.swing.JButton();
         checkDano = new javax.swing.JCheckBox();
         txtDano = new javax.swing.JTextField();
 
@@ -52,10 +58,10 @@ public class SrcLocacao extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tabLocacao);
 
-        jButton5.setText("Registrar Devolução");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btRegDevol.setText("Registrar Devolução");
+        btRegDevol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btRegDevolActionPerformed(evt);
             }
         });
 
@@ -77,7 +83,7 @@ public class SrcLocacao extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btRegDevol, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(checkDano)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -88,30 +94,63 @@ public class SrcLocacao extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
+                    .addComponent(btRegDevol)
                     .addComponent(checkDano)
                     .addComponent(txtDano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btRegDevolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegDevolActionPerformed
 
-    }//GEN-LAST:event_jButton5ActionPerformed
+        if (tabLocacao.getSelectedRow() != -1) {
+
+            HistoricoDevolucao hist = new HistoricoDevolucao();
+
+            Date datahj = new Date();
+
+            hist.setDataOperacao(datahj);
+
+            LocacaoDBC locDB = new LocacaoDBC();
+
+            hist.setLocacao(locDB.selectLocacao((int) tabLocacao.getValueAt(tabLocacao.getSelectedRow(), 0)));
+
+            hist.setIdFunc(control.login.Login.getSessao().getId());
+
+            if (checkDano.isSelected()) {
+
+                DanoDBC danoDB = new DanoDBC();
+
+                Dano dano = new Dano();
+                dano.setDano(txtDano.getText());
+                dano.setEquip(new Equipamento());
+
+                dano.getEquip().setId(hist.getLocacao().getIdEquipamento());
+
+                danoDB.insert(dano);
+
+                hist.setDano(danoDB.selectLast());
+
+                
+            }
+
+        }
+
+    }//GEN-LAST:event_btRegDevolActionPerformed
 
     private void checkDanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDanoActionPerformed
-if (checkDano.isSelected()) {
+        if (checkDano.isSelected()) {
 
             txtDano.setEnabled(true);
 
         } else {
             txtDano.setEnabled(false);
         }
-        
+
     }//GEN-LAST:event_checkDanoActionPerformed
 
     private void fillTabAll() throws ParseException {
@@ -147,8 +186,8 @@ if (checkDano.isSelected()) {
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btRegDevol;
     private javax.swing.JCheckBox checkDano;
-    private javax.swing.JButton jButton5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabLocacao;
     private javax.swing.JTextField txtDano;
