@@ -30,7 +30,7 @@ public class ReservaDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO Reserva (dataHoraReserva, idIEquipamento, nomeResponsavel, CPFResponsavel) values (?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Reserva (dataHoraReserva, idEquipamento, nomeResponsavel, CPFResponsavel) values (?, ?, ?, ?)");
 
             pst.setString(1, res.getDataHoraReserva());
             pst.setInt(2, res.getEquipamento().getId());
@@ -194,7 +194,7 @@ public class ReservaDBC {
 
                 Reserva res = new Reserva();
                 res.setDataHoraReserva(rs.getString("dataHoraReserva"));
-                res.setIdReserva(rs.getInt("idReserva"));
+                res.setIdReserva(rs.getInt("id"));
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));

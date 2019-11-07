@@ -97,6 +97,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Sucess");
             Menu mn = new Menu();
             mn.setVisible(true);
+            
             dispose();
 
         } else {

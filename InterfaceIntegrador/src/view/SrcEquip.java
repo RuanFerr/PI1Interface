@@ -284,7 +284,11 @@ public class SrcEquip extends javax.swing.JPanel {
             MainPNL.setLayout(bl);
             MainPNL.removeAll();
 
-            MainPNL.add(new CadEquip(Integer.parseInt((String) tabEquip.getValueAt(tabEquip.getSelectedRow(), 0))));
+            String idEquip = String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 0));
+            
+            int idEq = Integer.parseInt(idEquip);
+
+            MainPNL.add(new CadEquip(idEq));
 
             MainPNL.updateUI();
 
@@ -309,10 +313,12 @@ public class SrcEquip extends javax.swing.JPanel {
                 EquipamentoDBC equipDB = new EquipamentoDBC();
                 Equipamento equip = new Equipamento();
 
-                equip.setId(Integer.valueOf((String) tabEquip.getValueAt(tabEquip.getSelectedRow(), 0)));
+                equip.setId(Integer.valueOf(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 0))));
 
                 equipDB.delete(equip);
                 
+                fillTabAll();
+
             } else {
             }
         } else {

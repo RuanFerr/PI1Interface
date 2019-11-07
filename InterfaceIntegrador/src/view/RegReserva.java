@@ -30,6 +30,7 @@ public class RegReserva extends javax.swing.JPanel {
     }
 
     public RegReserva(int id) throws ParseException {
+
         initComponents();
 
         btRegistrar.setText("Alterar");
@@ -41,11 +42,11 @@ public class RegReserva extends javax.swing.JPanel {
 
         Date data = control.reserva.Reserva.formatador.parse(res.getDataHoraReserva());
 
-        btnAno.setSelectedItem(data.getYear());
+        btnAno.setSelectedItem(String.valueOf(data.getYear()));
         btnMes.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getMes()));
-        btnMes.setSelectedItem(data.getMonth());
+        btnMes.setSelectedItem(String.valueOf(data.getMonth()));
         btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
-        btnDia.setSelectedItem(data.getDay());
+        btnDia.setSelectedItem(String.valueOf(data.getDay()));
 
         EquipamentoDBC eqDB = new EquipamentoDBC();
         Equipamento equip = eqDB.selectEquip(res.getEquipamento().getId());
@@ -206,61 +207,67 @@ public class RegReserva extends javax.swing.JPanel {
 
             if (testNumCPF(CpfResp.getText()) && control.cadastro.Pessoa.testCPF(CpfResp.getText())) {
 
-                Reserva res = new Reserva();
-                String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
+                if (testData()) {
 
-                res.setDataHoraReserva(data);
+                    Reserva res = new Reserva();
 
-                res.setNomeResponsavel(nomeResponsavel.getText());
+                    String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
 
-                res.setCpfResp(Long.parseLong(CpfResp.getText()));
+                    res.setDataHoraReserva(data);
 
-                res.setEquipamento(new Equipamento());
+                    res.setNomeResponsavel(nomeResponsavel.getText());
 
-                res.getEquipamento().setId(retornaId(cbEquip.getSelectedItem()));
+                    res.setCpfResp(Long.parseLong(CpfResp.getText()));
 
-                ReservaDBC resDB = new ReservaDBC();
+                    res.setEquipamento(new Equipamento());
 
-                if (id == -1) {
+                    res.getEquipamento().setId(retornaId(cbEquip.getSelectedItem()));
 
-                    resDB.insert(res);
+                    ReservaDBC resDB = new ReservaDBC();
 
-                    BorderLayout bl = new BorderLayout();
+                    if (id == -1) {
 
-                    bl.addLayoutComponent(new RegReserva(), null);
-
-                    MainPNL.setLayout(bl);
-                    MainPNL.removeAll();
-                    MainPNL.add(new RegReserva());
-
-                    MainPNL.updateUI();
-
-                } else {
-
-                    Object[] opcoes = {"Confirmar", "Cancelar"};
-                    if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
-                            "Alterar Registro",
-                            JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            opcoes,
-                            opcoes[0]) == 0) {
-
-                        res.setIdReserva(id);
-                        resDB.update(res);
+                        resDB.insert(res);
 
                         BorderLayout bl = new BorderLayout();
 
-                        bl.addLayoutComponent(new SrcReserva(), null);
+                        bl.addLayoutComponent(new RegReserva(), null);
 
                         MainPNL.setLayout(bl);
                         MainPNL.removeAll();
-                        MainPNL.add(new SrcReserva());
+                        MainPNL.add(new RegReserva());
 
                         MainPNL.updateUI();
 
                     } else {
+
+                        Object[] opcoes = {"Confirmar", "Cancelar"};
+                        if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                                "Alterar Registro",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                opcoes,
+                                opcoes[0]) == 0) {
+
+                            res.setIdReserva(id);
+                            resDB.update(res);
+
+                            BorderLayout bl = new BorderLayout();
+
+                            bl.addLayoutComponent(new SrcReserva(), null);
+
+                            MainPNL.setLayout(bl);
+                            MainPNL.removeAll();
+                            MainPNL.add(new SrcReserva());
+
+                            MainPNL.updateUI();
+
+                        } else {
+                        }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Deve-se preencher os campos");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "CPF Inválido");
@@ -320,12 +327,28 @@ public class RegReserva extends javax.swing.JPanel {
         String nEq = String.valueOf(nEquip);
 
         int ind = nEq.lastIndexOf("--");
+        System.out.println(ind);
         String strId = nEq.substring(ind + 3);
-
+        System.out.println(strId);
         int ID = Integer.parseInt(strId);
 
         return ID;
     }
+
+    private boolean testData() {
+
+        boolean ano;
+        boolean mes;
+        boolean dia;
+        boolean equip;
+        ano = (!"ano".equals(String.valueOf(btnAno.getSelectedItem())));
+        mes = (!"mês".equals(String.valueOf(btnMes.getSelectedItem())));
+        dia = (!"dia".equals(String.valueOf(btnDia.getSelectedItem())));
+        equip = (!"".equals(String.valueOf(cbEquip.getSelectedItem())));
+
+        return dia && mes && ano && equip;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CpfResp;
     private javax.swing.JButton btRegistrar;

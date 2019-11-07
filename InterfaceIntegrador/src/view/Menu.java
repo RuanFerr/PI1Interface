@@ -230,7 +230,7 @@ public class Menu extends javax.swing.JFrame {
 
         MainPNL.setLayout(bl);
         MainPNL.removeAll();
-        MainPNL.add(new CadPessoa());
+        MainPNL.add(new RegLocacao());
 
         MainPNL.updateUI();
 
@@ -247,7 +247,7 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.add(new RegReserva());
 
         MainPNL.updateUI();
-        
+
     }//GEN-LAST:event_mnCadastrarReservaActionPerformed
 
     private void mnExibirLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirLocacaoActionPerformed

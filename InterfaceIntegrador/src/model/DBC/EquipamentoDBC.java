@@ -93,7 +93,7 @@ public class EquipamentoDBC {
                         rs.getString("marca"),
                         rs.getString("descricao"),
                         rs.getInt("numSerie"));
-
+                equip.setId(rs.getInt("idEquipamento"));
                 lista.add(equip);
 
             }
@@ -187,7 +187,7 @@ public class EquipamentoDBC {
 
         try {
 
-            pst = conn.prepareStatement("SELECT * from Equipamento where idEquipamento = ?");
+            pst = conn.prepareStatement("SELECT nome, marca, descricao, numSerie from Equipamento where idEquipamento = ?");
             pst.setInt(1, id);
 
             rs = pst.executeQuery();
@@ -196,8 +196,11 @@ public class EquipamentoDBC {
 
                 equip.setId(id);
                 equip.setNome(rs.getString("nome"));
+
                 equip.setMarca(rs.getString("marca"));
+
                 equip.setDescricao(rs.getString("descricao"));
+
                 equip.setNumSerie(rs.getInt("numSerie"));
 
             }

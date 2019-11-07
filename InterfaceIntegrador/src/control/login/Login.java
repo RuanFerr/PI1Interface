@@ -58,10 +58,10 @@ public class Login {
 
                 pss = new Pessoa();
                 pss.setNome(rs.getString("nome"));
-                pss.setSobrenome(rs.getString("sobrenome"));
+
                 pss.setEmail(rs.getString("email"));
                 pss.setSenha(rs.getString("senha"));
-                pss.setMatricula(rs.getInt("matricula"));
+
                 pss.setCargo(rs.getString("cargo"));
                 pss.setNomeUsuario(rs.getString("nomeUsuario"));
                 pss.setCpf(rs.getInt("CPF"));
