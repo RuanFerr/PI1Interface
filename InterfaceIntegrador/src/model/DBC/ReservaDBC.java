@@ -276,8 +276,48 @@ public class ReservaDBC {
             ConnectionFactory.closeConnection(conn, pst);
         }
 
-        
-        
+    }
+
+    public boolean testeReservaRepetida(String data, int idEq) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+        boolean test = true;
+        List<Reserva> lista = new ArrayList();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Reserva where dataHoraReserva = ? AND idEquipamento = ?");
+            pst.setString(1, data);
+            pst.setInt(2, idEq);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                Reserva res = new Reserva();
+                res.setDataHoraReserva(rs.getString("dataHoraReserva"));
+                res.setIdReserva(rs.getInt("id"));
+                res.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                res.setEquipamento(new Equipamento());
+                res.getEquipamento().setId(rs.getInt("idEquipamento"));
+                res.setCpfResp((rs.getString("CPFResponsavel")));
+                lista.add(res);
+
+                test = false;
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return test;
+
     }
 
 }

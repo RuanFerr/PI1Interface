@@ -230,44 +230,49 @@ public class RegReserva extends javax.swing.JPanel {
 
                         ReservaDBC resDB = new ReservaDBC();
 
-                        if (id == -1) {
+                        if (resDB.testeReservaRepetida(data, res.getEquipamento().getId())) {
 
-                            resDB.insert(res);
+                            if (id == -1) {
 
-                            BorderLayout bl = new BorderLayout();
-
-                            MainPNL.setLayout(bl);
-                            MainPNL.removeAll();
-                            MainPNL.add(new RegReserva());
-
-                            MainPNL.updateUI();
-
-                        } else {
-
-                            Object[] opcoes = {"Confirmar", "Cancelar"};
-                            if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
-                                    "Alterar Registro",
-                                    JOptionPane.DEFAULT_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE,
-                                    null,
-                                    opcoes,
-                                    opcoes[0]) == 0) {
-
-                                res.setIdReserva(id);
-                                resDB.update(res);
+                                resDB.insert(res);
 
                                 BorderLayout bl = new BorderLayout();
 
-                                bl.addLayoutComponent(new SrcReserva(), null);
-
                                 MainPNL.setLayout(bl);
                                 MainPNL.removeAll();
-                                MainPNL.add(new SrcReserva());
+                                MainPNL.add(new RegReserva());
 
                                 MainPNL.updateUI();
 
                             } else {
+
+                                Object[] opcoes = {"Confirmar", "Cancelar"};
+                                if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                                        "Alterar Registro",
+                                        JOptionPane.DEFAULT_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        null,
+                                        opcoes,
+                                        opcoes[0]) == 0) {
+
+                                    res.setIdReserva(id);
+                                    resDB.update(res);
+
+                                    BorderLayout bl = new BorderLayout();
+
+                                    bl.addLayoutComponent(new SrcReserva(), null);
+
+                                    MainPNL.setLayout(bl);
+                                    MainPNL.removeAll();
+                                    MainPNL.add(new SrcReserva());
+
+                                    MainPNL.updateUI();
+
+                                } else {
+                                }
                             }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Equipamento indisponivel para esta data");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Data inválida");
