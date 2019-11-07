@@ -236,20 +236,6 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mnCadastrarLocacaoActionPerformed
 
-    private void mnCadastrarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarReservaActionPerformed
-
-        BorderLayout bl = new BorderLayout();
-
-        bl.addLayoutComponent(new RegReserva(), null);
-
-        MainPNL.setLayout(bl);
-        MainPNL.removeAll();
-        MainPNL.add(new RegReserva());
-
-        MainPNL.updateUI();
-
-    }//GEN-LAST:event_mnCadastrarReservaActionPerformed
-
     private void mnExibirLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirLocacaoActionPerformed
 
         BorderLayout bl = new BorderLayout();
@@ -348,6 +334,20 @@ public class Menu extends javax.swing.JFrame {
         MainPNL.updateUI();
 
     }//GEN-LAST:event_mnRelatorioLocacaoActionPerformed
+
+    private void mnCadastrarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastrarReservaActionPerformed
+
+        BorderLayout bl = new BorderLayout();
+
+        bl.addLayoutComponent(new regReservaNew(), null);
+
+        MainPNL.setLayout(bl);
+        MainPNL.removeAll();
+        MainPNL.add(new regReservaNew());
+
+        MainPNL.updateUI();
+
+    }//GEN-LAST:event_mnCadastrarReservaActionPerformed
 
     /**
      * @param args the command line arguments
