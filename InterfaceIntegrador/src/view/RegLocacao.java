@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import model.DBC.LocacaoDBC;
 import java.util.List;
 import javax.swing.JOptionPane;
+import model.DBC.EquipamentoDBC;
 import model.DBC.ReservaDBC;
 
 /**
@@ -24,6 +25,7 @@ public class RegLocacao extends javax.swing.JPanel {
      * Creates new form RegLocacao
      */
     public RegLocacao() {
+
         initComponents();
     }
 
@@ -114,32 +116,46 @@ public class RegLocacao extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegActionPerformed
+        if (tabLocacao.getSelectedRow() != -1) {
+            if (testaCampos()) {
 
-        if (testaCampos()) {
+                if (testaCpfNumeros() && control.cadastro.Pessoa.testCPF(cCPFResp.getText())) {
 
-            if (testaCpfNumeros() && control.cadastro.Pessoa.testCPF(cCPFResp.getText())) {
+                    Locacao loc = new Locacao();
+                    loc.setCPFResponsavel(cCPFResp.getText());
+                    loc.setNomeResponsavel(cNomeResp.getText());
+                    loc.setIdEquipamento(retornaId(tabLocacao.getValueAt(tabLocacao.getSelectedRow(), 1)));
 
-                Locacao loc = new Locacao();
-                loc.setCPFResponsavel(Long.parseLong(cCPFResp.getText()));
-                Date data;
-                data = new Date();
-                String dt = control.reserva.Reserva.formatador.format(data);
-                loc.setDataLocacao(dt);
+                    Date data;
+                    data = new Date();
+                    String dt = control.reserva.Reserva.formatador.format(data);
+                    loc.setDataLocacao(dt);
+                    loc.setIdFuncionarioLocacao(control.login.Login.getSessao().getId());
 
-                LocacaoDBC locDB = new LocacaoDBC();
-                locDB.insert(loc);
-                ReservaDBC resDB = new ReservaDBC();
-                Reserva res = new Reserva();
-                res.setIdReserva((int) tabLocacao.getValueAt(tabLocacao.getSelectedRow(), 3));
-                resDB.delete(res);
+                    LocacaoDBC locDB = new LocacaoDBC();
+                    locDB.insert(loc);
 
+                    ReservaDBC resDB = new ReservaDBC();
+                    Reserva res = new Reserva();
+                    res.setIdReserva((int) tabLocacao.getValueAt(tabLocacao.getSelectedRow(), 3));
+                    resDB.locarReserva(res);
+
+                    cCPFResp.setText("");
+                    cNomeResp.setText("");
+                    fillTab();
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "CPF Inválido");
+
+                }
             } else {
-                
-                JOptionPane.showMessageDialog(null, "CPF Inválido");
-                
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos");
+
+            JOptionPane.showMessageDialog(null, "selecione uma linha");
+
         }
     }//GEN-LAST:event_btRegActionPerformed
 
@@ -175,6 +191,7 @@ public class RegLocacao extends javax.swing.JPanel {
         DefaultTableModel dtm = (DefaultTableModel) tabLocacao.getModel();
         dtm.setNumRows(0);
         Date dthj = new Date();
+
         String datahj = control.reserva.Reserva.formatador.format(dthj);
 
         ReservaDBC resDB = new ReservaDBC();
@@ -182,14 +199,34 @@ public class RegLocacao extends javax.swing.JPanel {
         List<Reserva> lista = resDB.selectData(datahj);
         for (Reserva r : lista) {
 
-            Object[] row = {r.getNomeResponsavel(),
-                r.getEquipamento().getNome(),
-                r.getDataHoraReserva(),
-                r.getIdReserva()};
-            dtm.addRow(row);
+            if (r.getStatus().equalsIgnoreCase("reservado")) {
+
+                EquipamentoDBC eqDB = new EquipamentoDBC();
+
+                r.setEquipamento(eqDB.selectEquip(r.getEquipamento().getId()));
+
+                Object[] row = {r.getNomeResponsavel(),
+                    (r.getEquipamento().getNome() + " -- " + r.getEquipamento().getId()),
+                    r.getDataHoraReserva(),
+                    r.getIdReserva()};
+                dtm.addRow(row);
+            }
         }
+
     }
 
+    private int retornaId(Object nEquip) {
+
+        String nEq = String.valueOf(nEquip);
+
+        int ind = nEq.lastIndexOf("--");
+        System.out.println(ind);
+        String strId = nEq.substring(ind + 3);
+        System.out.println(strId);
+        int ID = Integer.parseInt(strId);
+
+        return ID;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btReg;
     private javax.swing.JTextField cCPFResp;

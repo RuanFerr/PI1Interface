@@ -37,11 +37,11 @@ public class RelatorioDBC {
             if (hist.getDano().getId() == -1) {
 
                 pst = conn.prepareStatement("INSERT INTO relatorio (idLocacao, nomeResponsavel, CPFResponsavel, Situacao, idFuncionario, data) values (?, ?, ?, ?, ?, ?)");
-                pst.setInt(1, hist.getReserva().getIdReserva());
-                pst.setString(2, hist.getReserva().getNomeResponsavel());
-                pst.setInt(3, ((int) hist.getReserva().getCpfResp()));
+                pst.setInt(1, hist.getLocacao().getIdLocacao());
+                pst.setString(2, hist.getLocacao().getNomeResponsavel());
+                pst.setString(3, (hist.getLocacao().getCPFResponsavel()));
 
-                String data = hist.getReserva().getDataHoraReserva();
+                String data = hist.getLocacao().getDataLocacao();
                 data = Reserva.verSituacao(data);
                 pst.setString(4, data);
                 pst.setInt(5, hist.getIdFunc());
@@ -52,7 +52,7 @@ public class RelatorioDBC {
                 pst.setInt(1, hist.getDano().getId());
                 pst.setInt(2, hist.getReserva().getIdReserva());
                 pst.setString(3, hist.getReserva().getNomeResponsavel());
-                pst.setInt(4, ((int) hist.getReserva().getCpfResp()));
+                pst.setString(4, (hist.getReserva().getCpfResp()));
 
                 String data = hist.getReserva().getDataHoraReserva();
                 data = Reserva.verSituacao(data);
@@ -87,7 +87,7 @@ public class RelatorioDBC {
             pst.setInt(1, hist.getDano().getId());
             pst.setInt(2, hist.getReserva().getIdReserva());
             pst.setString(3, hist.getReserva().getNomeResponsavel());
-            pst.setInt(4, ((int) hist.getReserva().getCpfResp()));
+            pst.setString(4, (hist.getReserva().getCpfResp()));
             String data = hist.getReserva().getDataHoraReserva();
 
             pst.setString(5, Reserva.verSituacao(data));
@@ -133,7 +133,7 @@ public class RelatorioDBC {
                 hist.setReserva(new Reserva());
                 hist.getReserva().setIdReserva(rs.getInt("idReserva"));
                 hist.getReserva().setNomeResponsavel(rs.getString("nomePessoa"));
-                hist.getReserva().setCpfResp(rs.getInt("CPFPessoa"));
+                hist.getReserva().setCpfResp(rs.getString("CPFPessoa"));
                 hist.getReserva().setSituacao(rs.getString("Situacao"));
                 String data = rs.getString("data");
                 hist.setDataOperacao(control.reserva.Reserva.formatador.parse(data));

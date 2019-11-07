@@ -5,6 +5,14 @@
  */
 package view;
 
+import control.cadastro.Pessoa;
+import java.awt.BorderLayout;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.DBC.PessoaDBC;
+import static view.Menu.MainPNL;
+
 /**
  *
  * @author Kelli
@@ -16,6 +24,8 @@ public class SrcPessoa extends javax.swing.JPanel {
      */
     public SrcPessoa() {
         initComponents();
+        fillTab();
+
     }
 
     /**
@@ -28,11 +38,11 @@ public class SrcPessoa extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabPessoa = new javax.swing.JTable();
         btnAlterar = new javax.swing.JButton();
         btnDeletar = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabPessoa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -40,7 +50,7 @@ public class SrcPessoa extends javax.swing.JPanel {
                 "ID", "nome", "Email", "CPF", "Cargo"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabPessoa);
 
         btnAlterar.setText("Alterar");
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -50,6 +60,11 @@ public class SrcPessoa extends javax.swing.JPanel {
         });
 
         btnDeletar.setText("Deletar");
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -71,25 +86,66 @@ public class SrcPessoa extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(89, 89, 89)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAlterar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDeletar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        
-        
-        
+
+        if (tabPessoa.getSelectedRow() != -1) {
+
+            BorderLayout bl = new BorderLayout();
+
+            bl.addLayoutComponent(new CadPessoa(), null);
+
+            MainPNL.setLayout(bl);
+            MainPNL.removeAll();
+            MainPNL.add(new CadPessoa(Integer.parseInt(String.valueOf(tabPessoa.getValueAt(tabPessoa.getSelectedRow(), 0)))));
+
+            MainPNL.updateUI();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma Pessoa");
+        }
+
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+        if (tabPessoa.getSelectedRow() != -1) {
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma Pessoa");
+        }
+    }//GEN-LAST:event_btnDeletarActionPerformed
+
+    private void fillTab() {
+
+        DefaultTableModel dtm = (DefaultTableModel) tabPessoa.getModel();
+        dtm.setNumRows(0);
+        PessoaDBC pssDB = new PessoaDBC();
+        List<Pessoa> lista = pssDB.select();
+        for (Pessoa pes : lista) {
+
+            Object[] row = {pes.getId(),
+                pes.getNome(),
+                pes.getEmail(),
+                pes.getCpf(),
+                pes.getCargo()
+            };
+
+            dtm.addRow(row);
+
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnDeletar;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabPessoa;
     // End of variables declaration//GEN-END:variables
 }

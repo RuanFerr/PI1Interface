@@ -8,17 +8,12 @@ import control.connection.ConnectionFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
-public class Login {
+public abstract class Login {
 
     private static ArrayList<Pessoa> grpPessoa = new ArrayList();
 
     private static Pessoa sessao;
-
-    public Login() {
-
-    }
 
     public static ArrayList<Pessoa> getGrpPessoa() {
         return grpPessoa;
@@ -63,8 +58,8 @@ public class Login {
                 pss.setSenha(rs.getString("senha"));
 
                 pss.setCargo(rs.getString("cargo"));
-                pss.setNomeUsuario(rs.getString("nomeUsuario"));
-                pss.setCpf(rs.getInt("CPF"));
+
+                pss.setCpf(rs.getString("CPF"));
                 pss.setId(rs.getInt("id"));
 
                 auth = true;

@@ -24,6 +24,27 @@ public class CadPessoa extends javax.swing.JPanel {
         initComponents();
     }
 
+    public CadPessoa(int id) {
+
+        initComponents();
+
+        PessoaDBC pssDB = new PessoaDBC();
+
+        Pessoa pss = pssDB.selectPessoa(id);
+
+        cNome.setText(pss.getNome());
+        cEmail.setText(pss.getEmail());
+        cSenha.setText(pss.getSenha());
+        cCPF.setText(pss.getCpf());
+        Object cargo = pss.getCargo();
+        cbCargo.setSelectedItem(cargo);
+
+        this.id = id;
+
+    }
+
+    int id = -1;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,7 +58,7 @@ public class CadPessoa extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cbCargo = new javax.swing.JComboBox<>();
+        cbCargo = new javax.swing.JComboBox<String>();
         cNome = new javax.swing.JTextField();
         cEmail = new javax.swing.JTextField();
         cCPF = new javax.swing.JTextField();
@@ -53,7 +74,7 @@ public class CadPessoa extends javax.swing.JPanel {
 
         jLabel4.setText("Senha");
 
-        cbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "cargo", "gerente", "funcionario" }));
+        cbCargo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cargo", "Gerente", "Funcionario" }));
 
         jLabel5.setText("Cargo");
 
@@ -69,32 +90,34 @@ public class CadPessoa extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75)
+                        .addComponent(btCad))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cEmail))
+                        .addComponent(cNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cCPF))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(btCad))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(23, 35, Short.MAX_VALUE)
+                        .addComponent(cEmail)))
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cbCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(112, 112, 112))
+                .addGap(92, 92, 92))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,12 +155,12 @@ public class CadPessoa extends javax.swing.JPanel {
 
                     pss.setCargo((String) cbCargo.getSelectedItem());
                     pss.setNome(cNome.getText());
-                    pss.setCpf(Long.parseLong(cCPF.getText()));
+                    pss.setCpf(cCPF.getText());
                     pss.setEmail(cEmail.getText());
                     pss.setSenha(cSenha.getText());
                     PessoaDBC pssDB = new PessoaDBC();
                     pssDB.insert(pss);
-                    
+                    resetTab();
                 } else {
                     JOptionPane.showMessageDialog(null, "CPF Inválido");
                 }
@@ -189,6 +212,16 @@ public class CadPessoa extends javax.swing.JPanel {
             ok = false;
         }
         return ok;
+    }
+
+    private void resetTab() {
+
+        cNome.setText("");
+        cEmail.setText("");
+        cCPF.setText("");
+        cSenha.setText("");
+        cbCargo.setSelectedItem("cargo");
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCad;

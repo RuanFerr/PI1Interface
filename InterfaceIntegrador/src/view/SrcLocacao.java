@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.DBC.DanoDBC;
+import model.DBC.EquipamentoDBC;
 import model.DBC.LocacaoDBC;
 import model.DBC.RelatorioDBC;
 
@@ -145,6 +146,8 @@ public class SrcLocacao extends javax.swing.JPanel {
             }
 
             RelatorioDBC relDB = new RelatorioDBC();
+            
+            locDB.devolveLocacao(hist.getLocacao());
 
             try {
                 relDB.insert(hist);
@@ -170,19 +173,31 @@ public class SrcLocacao extends javax.swing.JPanel {
     }//GEN-LAST:event_checkDanoActionPerformed
 
     private void fillTabAll() throws ParseException {
+
         LocacaoDBC locDB = new LocacaoDBC();
         List<Locacao> lista = locDB.select();
         DefaultTableModel dtm = (DefaultTableModel) tabLocacao.getModel();
         dtm.setNumRows(0);
 
         for (Locacao loc : lista) {
+            if (!loc.getStatus().equalsIgnoreCase("devolvido")) {
 
-            Object[] row = {loc.getIdLocacao(),
-                loc.getIdEquipamento(),
-                loc.getNomeResponsavel(),
-                loc.getDataLocacao(),
-                testSituacao(loc.getDataLocacao())};
-            dtm.addRow(row);
+                EquipamentoDBC eqDB = new EquipamentoDBC();
+
+                Equipamento eq = eqDB.selectEquip(loc.getIdEquipamento());
+
+                Object[] row = {loc.getIdLocacao(),
+                    eq.getNome() + " -- " + eq.getId(),
+                    loc.getNomeResponsavel(),
+                    loc.getDataLocacao(),
+                    testSituacao(loc.getDataLocacao())};
+
+                if (testSituacao(loc.getDataLocacao()).equalsIgnoreCase("atrasado")) {
+                    locDB.atrasado(loc);
+                }
+
+                dtm.addRow(row);
+            }
         }
 
     }
@@ -191,6 +206,10 @@ public class SrcLocacao extends javax.swing.JPanel {
 
         Date dataLoc = control.reserva.Reserva.formatador.parse(data);
 
+        dataLoc.setHours(23);
+        dataLoc.setMinutes(59);
+        dataLoc.setSeconds(59);
+
         Date dthj = new Date();
 
         if (dataLoc.before(dthj)) {
@@ -198,7 +217,7 @@ public class SrcLocacao extends javax.swing.JPanel {
             return "atrasado";
 
         } else {
-            return "reservado";
+            return "locado";
         }
 
     }

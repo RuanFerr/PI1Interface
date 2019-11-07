@@ -25,14 +25,14 @@ public class LocacaoDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO Locacao (dataLocacao, idIEquipamento, nomeResponsavel, CPFResponsavel, idFuncionario) values (?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Locacao (dataLocacao, idEquipamento, nomeResponsavel, CPFResponsavel, idFuncionario, status) values (?, ?, ?, ?, ?, ?)");
 
             pst.setString(1, loc.getDataLocacao());
             pst.setInt(2, loc.getIdEquipamento());
             pst.setString(3, loc.getNomeResponsavel());
             pst.setString(4, String.valueOf(loc.getCPFResponsavel()));
-            pst.setLong(5, loc.getIdFuncionarioLocacao());
-
+            pst.setInt(5, loc.getIdFuncionarioLocacao());
+            pst.setString(6, "locado");
             pst.execute();
 
             JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
@@ -57,7 +57,7 @@ public class LocacaoDBC {
             pst.setString(1, loc.getDataLocacao());
             pst.setInt(2, loc.getIdEquipamento());
             pst.setString(3, loc.getNomeResponsavel());
-            pst.setString(4, String.valueOf(loc.getCPFResponsavel()));
+            pst.setString(4, loc.getCPFResponsavel());
             pst.setInt(5, loc.getIdFuncionarioLocacao());
             pst.setInt(6, loc.getIdLocacao());
 
@@ -93,9 +93,10 @@ public class LocacaoDBC {
                 loc.setDataLocacao(rs.getString("dataLocacao"));
                 loc.setIdLocacao(rs.getInt("idLocacao"));
                 loc.setNomeResponsavel(rs.getString("nomeResponsavel"));
-                loc.setCPFResponsavel(Long.parseLong(rs.getString("CPFResponsavel")));
+                loc.setCPFResponsavel(rs.getString("CPFResponsavel"));
                 loc.setIdFuncionarioLocacao(rs.getInt("idFuncionario"));
                 loc.setIdEquipamento(rs.getInt("idEquipamento"));
+                loc.setStatus(rs.getString("status"));
                 lista.add(loc);
 
             }
@@ -153,7 +154,7 @@ public class LocacaoDBC {
                 loc.setDataLocacao(rs.getString("dataLocacao"));
                 loc.setIdLocacao(rs.getInt("idLocacao"));
                 loc.setNomeResponsavel(rs.getString("nomeResponsavel"));
-                loc.setCPFResponsavel(Long.parseLong(rs.getString("CPFResponsavel")));
+                loc.setCPFResponsavel(rs.getString("CPFResponsavel"));
                 loc.setIdFuncionarioLocacao(rs.getInt("idFuncionario"));
                 loc.setIdEquipamento(rs.getInt("idEquipamento"));
 
@@ -168,4 +169,53 @@ public class LocacaoDBC {
         return loc;
 
     }
+
+    public void atrasado(Locacao loc) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        try {
+
+            pst = conn.prepareStatement("UPDATE Locacao set status = ? where idLocacao = ?");
+
+            pst.setString(1, "atrasado");
+            pst.setInt(2, loc.getIdLocacao());
+
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst);
+        }
+
+    }
+
+    public void devolveLocacao(Locacao loc) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        try {
+
+            pst = conn.prepareStatement("UPDATE Locacao set status = ? where idLocacao = ?");
+
+            pst.setString(1, "devolvido");
+            pst.setInt(2, loc.getIdLocacao());
+
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst);
+        }
+
+    }
+
 }

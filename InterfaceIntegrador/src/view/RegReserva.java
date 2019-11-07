@@ -9,8 +9,11 @@ import control.reserva.Equipamento;
 import control.reserva.Reserva;
 import java.awt.BorderLayout;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.DBC.EquipamentoDBC;
 import model.DBC.ReservaDBC;
@@ -18,12 +21,12 @@ import static view.Menu.MainPNL;
 
 /**
  *
- * @author Kelli
+ * @author Climerio Neto
  */
 public class RegReserva extends javax.swing.JPanel {
 
     /**
-     * Creates new form RegLocacao
+     * Creates new form regReservaNew
      */
     public RegReserva() {
         initComponents();
@@ -42,11 +45,21 @@ public class RegReserva extends javax.swing.JPanel {
 
         Date data = control.reserva.Reserva.formatador.parse(res.getDataHoraReserva());
 
-        btnAno.setSelectedItem(String.valueOf(data.getYear()));
+        Calendar calend = Calendar.getInstance();
+        calend.setTime(data);
+
+        btnAno.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getAno()));
+        Object ano = String.valueOf(calend.get(Calendar.YEAR));
+        btnAno.setSelectedItem(ano);
+
         btnMes.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getMes()));
-        btnMes.setSelectedItem(String.valueOf(data.getMonth()));
+        Object mes = String.valueOf(calend.get(Calendar.MONTH));
+        btnMes.setSelectedItem(mes);
+
         btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
-        btnDia.setSelectedItem(String.valueOf(data.getDay()));
+        Object dia = String.valueOf(calend.get(Calendar.DAY_OF_MONTH));
+
+        btnDia.setSelectedItem(dia);
 
         EquipamentoDBC eqDB = new EquipamentoDBC();
         Equipamento equip = eqDB.selectEquip(res.getEquipamento().getId());
@@ -74,19 +87,21 @@ public class RegReserva extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel7 = new javax.swing.JLabel();
-        btnAno = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        btnMes = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        btnDia = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        cbEquip = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
         nomeResponsavel = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         CpfResp = new javax.swing.JTextField();
+        btnAno = new javax.swing.JComboBox<String>();
         btRegistrar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnMes = new javax.swing.JComboBox<String>();
+        jLabel2 = new javax.swing.JLabel();
+        btnDia = new javax.swing.JComboBox<Object>();
+        jLabel3 = new javax.swing.JLabel();
+        cbEquip = new javax.swing.JComboBox<String>();
+        jLabel4 = new javax.swing.JLabel();
+
+        jLabel6.setText("CPF ");
 
         jLabel7.setText("Ano");
 
@@ -94,6 +109,13 @@ public class RegReserva extends javax.swing.JPanel {
         btnAno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAnoActionPerformed(evt);
+            }
+        });
+
+        btRegistrar.setText("Registrar");
+        btRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRegistrarActionPerformed(evt);
             }
         });
 
@@ -116,15 +138,6 @@ public class RegReserva extends javax.swing.JPanel {
         jLabel3.setText("Equipamento");
 
         jLabel4.setText("Responsavel");
-
-        jLabel6.setText("CPF ");
-
-        btRegistrar.setText("Registrar");
-        btRegistrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btRegistrarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -185,13 +198,91 @@ public class RegReserva extends javax.swing.JPanel {
                     .addComponent(CpfResp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(75, 75, 75)
                 .addComponent(btRegistrar)
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnoActionPerformed
         btnMes.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getMes()));
     }//GEN-LAST:event_btnAnoActionPerformed
+
+    private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
+
+        if (!nomeResponsavel.getText().isEmpty() && !CpfResp.getText().isEmpty() && testData()) {
+
+            if (testNumCPF(CpfResp.getText()) && control.cadastro.Pessoa.testCPF(CpfResp.getText())) {
+
+                String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
+
+                try {
+                    if (DataFutura(data)) {
+
+                        Reserva res = new Reserva();
+
+                        res.setDataHoraReserva(data);
+
+                        res.setNomeResponsavel(nomeResponsavel.getText());
+
+                        res.setCpfResp(CpfResp.getText());
+
+                        res.setEquipamento(new Equipamento());
+
+                        res.getEquipamento().setId(retornaId(cbEquip.getSelectedItem()));
+
+                        ReservaDBC resDB = new ReservaDBC();
+
+                        if (id == -1) {
+
+                            resDB.insert(res);
+
+                            BorderLayout bl = new BorderLayout();
+
+                            MainPNL.setLayout(bl);
+                            MainPNL.removeAll();
+                            MainPNL.add(new RegReserva());
+
+                            MainPNL.updateUI();
+
+                        } else {
+
+                            Object[] opcoes = {"Confirmar", "Cancelar"};
+                            if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+                                    "Alterar Registro",
+                                    JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    null,
+                                    opcoes,
+                                    opcoes[0]) == 0) {
+
+                                res.setIdReserva(id);
+                                resDB.update(res);
+
+                                BorderLayout bl = new BorderLayout();
+
+                                bl.addLayoutComponent(new SrcReserva(), null);
+
+                                MainPNL.setLayout(bl);
+                                MainPNL.removeAll();
+                                MainPNL.add(new SrcReserva());
+
+                                MainPNL.updateUI();
+
+                            } else {
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Data inválida");
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(RegReserva.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "CPF Inválido");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Deve-se preencher os campos");
+        }
+    }//GEN-LAST:event_btRegistrarActionPerformed
 
     private void btnMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesActionPerformed
         btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
@@ -200,83 +291,6 @@ public class RegReserva extends javax.swing.JPanel {
     private void btnDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiaActionPerformed
         cbEquip.setModel(new javax.swing.DefaultComboBoxModel<>(retornaNomeItem()));
     }//GEN-LAST:event_btnDiaActionPerformed
-
-    private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
-
-        if (!nomeResponsavel.getText().isEmpty() & !CpfResp.getText().isEmpty()) {
-
-            if (testNumCPF(CpfResp.getText()) && control.cadastro.Pessoa.testCPF(CpfResp.getText())) {
-
-                if (testData()) {
-
-                    Reserva res = new Reserva();
-
-                    String data = btnDia.getSelectedItem() + "/" + btnMes.getSelectedItem() + "/" + btnAno.getSelectedItem();
-
-                    res.setDataHoraReserva(data);
-
-                    res.setNomeResponsavel(nomeResponsavel.getText());
-
-                    res.setCpfResp(Long.parseLong(CpfResp.getText()));
-
-                    res.setEquipamento(new Equipamento());
-
-                    res.getEquipamento().setId(retornaId(cbEquip.getSelectedItem()));
-
-                    ReservaDBC resDB = new ReservaDBC();
-
-                    if (id == -1) {
-
-                        resDB.insert(res);
-
-                        BorderLayout bl = new BorderLayout();
-
-                        bl.addLayoutComponent(new RegReserva(), null);
-
-                        MainPNL.setLayout(bl);
-                        MainPNL.removeAll();
-                        MainPNL.add(new RegReserva());
-
-                        MainPNL.updateUI();
-
-                    } else {
-
-                        Object[] opcoes = {"Confirmar", "Cancelar"};
-                        if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
-                                "Alterar Registro",
-                                JOptionPane.DEFAULT_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                opcoes,
-                                opcoes[0]) == 0) {
-
-                            res.setIdReserva(id);
-                            resDB.update(res);
-
-                            BorderLayout bl = new BorderLayout();
-
-                            bl.addLayoutComponent(new SrcReserva(), null);
-
-                            MainPNL.setLayout(bl);
-                            MainPNL.removeAll();
-                            MainPNL.add(new SrcReserva());
-
-                            MainPNL.updateUI();
-
-                        } else {
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Deve-se preencher os campos");
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "CPF Inválido");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Deve-se preencher os campos");
-        }
-
-    }//GEN-LAST:event_btRegistrarActionPerformed
 
     public String[] retornaDias() {
 
@@ -347,6 +361,26 @@ public class RegReserva extends javax.swing.JPanel {
         equip = (!"".equals(String.valueOf(cbEquip.getSelectedItem())));
 
         return dia && mes && ano && equip;
+    }
+
+    private boolean DataFutura(String data) throws ParseException {
+
+        boolean dataFutura = false;
+
+        Date datahj = new Date();
+
+        Date dataRes = control.reserva.Reserva.formatador.parse(data);
+
+        dataRes.setHours(23);
+        dataRes.setMinutes(59);
+        dataRes.setSeconds(59);
+
+        if (dataRes.after(datahj)) {
+            dataFutura = true;
+        }
+
+        return dataFutura;
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

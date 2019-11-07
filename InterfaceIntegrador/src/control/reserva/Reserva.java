@@ -11,8 +11,9 @@ public class Reserva {
     private String dataHoraReserva;
     private Equipamento equipamento;
     private String nomeResponsavel;
-    private long CpfResp;
+    private String CpfResp;
     private String situacao;
+    private String status;
 
     public static SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -20,7 +21,7 @@ public class Reserva {
 
     }
 
-    public Reserva(Equipamento item, String dataHora, String nomeResponsavel, long cpfResp) {
+    public Reserva(Equipamento item, String dataHora, String nomeResponsavel, String cpfResp) {
         this.dataHoraReserva = dataHora;
         this.equipamento = item;
         this.nomeResponsavel = nomeResponsavel;
@@ -45,11 +46,11 @@ public class Reserva {
         this.newData = newData;
     }
 
-    public long getCpfResp() {
+    public String getCpfResp() {
         return CpfResp;
     }
 
-    public void setCpfResp(long CpfResp) {
+    public void setCpfResp(String CpfResp) {
         this.CpfResp = CpfResp;
     }
 
@@ -133,20 +134,28 @@ public class Reserva {
         Reserva.ano = ano;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     /*public static String[] retornaNomeItem() {
 
-        final int asd = CadastroEquipamento.itens.size();
+     final int asd = CadastroEquipamento.itens.size();
 
-        String[] nomes = new String[asd];
+     String[] nomes = new String[asd];
 
-        for (int i = 0; i < CadastroEquipamento.itens.size(); i++) {
+     for (int i = 0; i < CadastroEquipamento.itens.size(); i++) {
 
-            String b = CadastroEquipamento.itens.get(i).getNome();
+     String b = CadastroEquipamento.itens.get(i).getNome();
 
-            nomes[i] = b;
-        }
-        return nomes;
-    }*/
+     nomes[i] = b;
+     }
+     return nomes;
+     }*/
     public String getNomeResponsavel() {
         return nomeResponsavel;
     }
@@ -182,7 +191,7 @@ public class Reserva {
             return "Atrasado";
 
         } else {
-            return "Reservado";
+            return "Em dia";
         }
 
     }

@@ -12,11 +12,20 @@ package control.reserva;
 public class Locacao {
 
     String nomeResponsavel;
-    long CPFResponsavel;
+    String CPFResponsavel;
     String dataLocacao;
     int idFuncionarioLocacao;
     int idEquipamento;
     int idLocacao;
+    String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getNomeResponsavel() {
         return nomeResponsavel;
@@ -26,11 +35,11 @@ public class Locacao {
         this.nomeResponsavel = nomeResponsavel;
     }
 
-    public long getCPFResponsavel() {
+    public String getCPFResponsavel() {
         return CPFResponsavel;
     }
 
-    public void setCPFResponsavel(long CPFResponsavel) {
+    public void setCPFResponsavel(String CPFResponsavel) {
         this.CPFResponsavel = CPFResponsavel;
     }
 

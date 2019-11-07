@@ -9,7 +9,7 @@ public class Pessoa {
     private String cargo;
     private String nomeUsuario;
     private int matricula;
-    private long cpf;
+    private String cpf;
     private int id;
 
     public String getNome() {
@@ -60,11 +60,11 @@ public class Pessoa {
         this.matricula = matricula;
     }
 
-    public long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

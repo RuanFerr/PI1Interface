@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.DBC.EquipamentoDBC;
 import model.DBC.ReservaDBC;
 import static view.Menu.MainPNL;
 
@@ -330,17 +331,23 @@ public class SrcReserva extends javax.swing.JPanel {
         dtm.setNumRows(0);
 
         for (Reserva res : list) {
+            
+            if (res.getStatus().equalsIgnoreCase("reservado")) {
 
-            Object[] row = {res.getIdReserva(),
-                res.getEquipamento().getId(),
-                res.getDataHoraReserva(),
-                res.getNomeResponsavel(),
-                res.getCpfResp()
+                Equipamento eq;
+                EquipamentoDBC eqDB = new EquipamentoDBC();
+                eq = eqDB.selectEquip(res.getEquipamento().getId());
 
-            };
+                Object[] row = {res.getIdReserva(),
+                    eq.getNome() + " -- " + eq.getId(),
+                    res.getDataHoraReserva(),
+                    res.getNomeResponsavel(),
+                    res.getCpfResp()
 
-            dtm.addRow(row);
+                };
 
+                dtm.addRow(row);
+            }
         }
 
     }

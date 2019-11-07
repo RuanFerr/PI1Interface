@@ -30,12 +30,13 @@ public class ReservaDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO Reserva (dataHoraReserva, idEquipamento, nomeResponsavel, CPFResponsavel) values (?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Reserva (dataHoraReserva, idEquipamento, nomeResponsavel, CPFResponsavel, status) values (?, ?, ?, ?, ?)");
 
             pst.setString(1, res.getDataHoraReserva());
             pst.setInt(2, res.getEquipamento().getId());
             pst.setString(3, res.getNomeResponsavel());
             pst.setString(4, String.valueOf(res.getCpfResp()));
+            pst.setString(5, "Reservado");
 
             pst.execute();
 
@@ -98,7 +99,8 @@ public class ReservaDBC {
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
-                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
+                res.setStatus(rs.getString("Status"));
+                res.setCpfResp((rs.getString("CPFResponsavel")));
                 lista.add(res);
 
             }
@@ -155,11 +157,12 @@ public class ReservaDBC {
 
                 Reserva res = new Reserva();
                 res.setDataHoraReserva(rs.getString("dataHoraReserva"));
-                res.setIdReserva(rs.getInt("idReserva"));
+                res.setIdReserva(rs.getInt("id"));
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
-                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
+                res.setCpfResp((rs.getString("CPFResponsavel")));
+                res.setStatus(rs.getString("Status"));
                 lista.add(res);
 
             }
@@ -198,7 +201,7 @@ public class ReservaDBC {
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
-                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
+                res.setCpfResp((rs.getString("CPFResponsavel")));
                 lista.add(res);
 
             }
@@ -236,7 +239,7 @@ public class ReservaDBC {
                 res.setNomeResponsavel(rs.getString("nomeResponsavel"));
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
-                res.setCpfResp(Long.parseLong(rs.getString("CPFResponsavel")));
+                res.setCpfResp((rs.getString("CPFResponsavel")));
 
             }
 
@@ -247,6 +250,30 @@ public class ReservaDBC {
         }
 
         return res;
+
+    }
+
+    public void locarReserva(Reserva res) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        try {
+
+            pst = conn.prepareStatement("UPDATE Reserva set status = ? where id = ?");
+
+            pst.setString(1, "locado");
+            pst.setInt(2, res.getIdReserva());
+
+            pst.execute();
+
+            JOptionPane.showMessageDialog(null, "Salvo com Sucesso");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst);
+        }
 
     }
 

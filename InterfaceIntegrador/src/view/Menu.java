@@ -21,9 +21,11 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
-        if (!(control.login.Login.getSessao().getCargo().equals("gerente"))) {
+        if (!(control.login.Login.getSessao().getCargo().equals("Gerente"))) {
+            
             mnAdmin.setEnabled(false);
             mnAdmin.setVisible(false);
+            
         }
     }
 
@@ -59,6 +61,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem11.setText("jMenuItem11");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("StarDust");
 
         javax.swing.GroupLayout MainPNLLayout = new javax.swing.GroupLayout(MainPNL);
         MainPNL.setLayout(MainPNLLayout);
@@ -193,6 +196,7 @@ public class Menu extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnExibirEquipamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExibirEquipamentoActionPerformed
@@ -230,7 +234,7 @@ public class Menu extends javax.swing.JFrame {
 
         MainPNL.setLayout(bl);
         MainPNL.removeAll();
-        MainPNL.add(new RegLocacao());
+        MainPNL.add(new RegLocacao(true));
 
         MainPNL.updateUI();
 
@@ -339,11 +343,11 @@ public class Menu extends javax.swing.JFrame {
 
         BorderLayout bl = new BorderLayout();
 
-        bl.addLayoutComponent(new regReservaNew(), null);
+        bl.addLayoutComponent(new RegReserva(), null);
 
         MainPNL.setLayout(bl);
         MainPNL.removeAll();
-        MainPNL.add(new regReservaNew());
+        MainPNL.add(new RegReserva());
 
         MainPNL.updateUI();
 

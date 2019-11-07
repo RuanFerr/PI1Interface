@@ -29,13 +29,13 @@ public class PessoaDBC {
 
         try {
 
-            pst = conn.prepareStatement("INSERT INTO Pessoa (nome, email, senha, cargo, CPF) values (?, ?, ?, ?, ?, ?)");
+            pst = conn.prepareStatement("INSERT INTO Pessoa (nome, email, senha, cargo, CPF) values (?, ?, ?, ?, ?)");
 
             pst.setString(1, pss.getNome());
             pst.setString(2, pss.getEmail());
             pst.setString(3, pss.getSenha());
             pst.setString(4, pss.getCargo());
-            pst.setString(5, String.valueOf(pss.getCpf()));
+            pst.setString(5, pss.getCpf());
 
             pst.execute();
 
@@ -64,7 +64,7 @@ public class PessoaDBC {
             pst.setString(3, pss.getSenha());
             pst.setString(4, pss.getCargo());
 
-            pst.setString(5, String.valueOf(pss.getCpf()));
+            pst.setString(5, pss.getCpf());
             pst.setString(6, String.valueOf(pss.getId()));
 
             pst.execute();
@@ -102,7 +102,7 @@ public class PessoaDBC {
                 pss.setSenha(rs.getString("senha"));
                 pss.setCargo(rs.getString("cargo"));
 
-                pss.setCpf(rs.getInt("CPF"));
+                pss.setCpf(rs.getString("CPF"));
                 pss.setId(rs.getInt("id"));
 
                 lista.add(pss);
@@ -138,6 +138,44 @@ public class PessoaDBC {
         } finally {
             ConnectionFactory.closeConnection(conn, pst);
         }
+
+    }
+
+    public Pessoa selectPessoa(int id) {
+
+        Connection conn = ConnectionFactory.getConnection();
+
+        PreparedStatement pst = null;
+
+        ResultSet rs = null;
+        Pessoa pss = new Pessoa();
+
+        try {
+
+            pst = conn.prepareStatement("SELECT * from Pessoa where id = ?");
+            pst.setInt(1, id);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                pss.setNome(rs.getString("nome"));
+
+                pss.setEmail(rs.getString("email"));
+                pss.setSenha(rs.getString("senha"));
+                pss.setCargo(rs.getString("cargo"));
+
+                pss.setCpf(rs.getString("CPF"));
+                pss.setId(rs.getInt("id"));
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(conn, pst, rs);
+        }
+
+        return pss;
 
     }
 

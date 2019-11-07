@@ -285,7 +285,7 @@ public class SrcEquip extends javax.swing.JPanel {
             MainPNL.removeAll();
 
             String idEquip = String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 0));
-            
+
             int idEq = Integer.parseInt(idEquip);
 
             MainPNL.add(new CadEquip(idEq));
@@ -316,7 +316,7 @@ public class SrcEquip extends javax.swing.JPanel {
                 equip.setId(Integer.valueOf(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 0))));
 
                 equipDB.delete(equip);
-                
+
                 fillTabAll();
 
             } else {
