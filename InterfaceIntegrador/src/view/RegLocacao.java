@@ -60,7 +60,15 @@ public class RegLocacao extends javax.swing.JPanel {
             new String [] {
                 "Responsavel", "Equipamento", "Data", "id"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabLocacao);
 
         btReg.setText("Registrar");

@@ -32,6 +32,7 @@ public class SrcReserva extends javax.swing.JPanel {
 
         fillTabAll();
 
+        pnExibir.setVisible(false);
     }
 
     /**
@@ -138,7 +139,15 @@ public class SrcReserva extends javax.swing.JPanel {
             new String [] {
                 "ID", "NomeEquipamento", "dataReserva", "Responsavel", "CPFResponsavel"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabRes);
 
         tbAlterar.setText("Alterar");

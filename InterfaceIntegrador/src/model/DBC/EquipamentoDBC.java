@@ -144,7 +144,7 @@ public class EquipamentoDBC {
             if (busca.equals("locados")) {
                 pst = conn.prepareStatement("SELECT Equipamento.*, Reserva.dataHoraReserva from Equipamento join Reserva on Reserva.idEquipamento = Equipamento.idEquipamento where dataHoraReserva = ?");
             } else {
-                pst = conn.prepareStatement("SELECT Equipamento.*, Reserva.dataHoraReserva from Equipamento join Reserva on Reserva.idEquipamento = Equipamento.idEquipamento where dataHoraReserva != ?");
+                pst = conn.prepareStatement("SELECT Equipamento.*, Reserva.dataHoraReserva from Equipamento INNER join Reserva on Reserva.idEquipamento = Equipamento.idEquipamento where dataHoraReserva != ?");
             }
 
             pst.setString(1, data);
@@ -153,16 +153,14 @@ public class EquipamentoDBC {
 
             while (rs.next()) {
 
-                if (rs.getString("dataHoraReserva").equals(data)) {
-                    Equipamento equip = new Equipamento(
-                            rs.getString("nome"),
-                            rs.getString("marca"),
-                            rs.getString("descricao"),
-                            rs.getInt("numSerie"));
-                    equip.setId(rs.getInt("idEquipamento"));
-                    lista.add(equip);
+                Equipamento equip = new Equipamento(
+                        rs.getString("nome"),
+                        rs.getString("marca"),
+                        rs.getString("descricao"),
+                        rs.getInt("numSerie"));
+                equip.setId(rs.getInt("idEquipamento"));
+                lista.add(equip);
 
-                }
             }
 
         } catch (SQLException ex) {

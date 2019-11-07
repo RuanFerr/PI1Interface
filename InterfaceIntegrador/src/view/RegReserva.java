@@ -53,13 +53,12 @@ public class RegReserva extends javax.swing.JPanel {
         btnAno.setSelectedItem(ano);
 
         btnMes.setModel(new javax.swing.DefaultComboBoxModel<>(control.reserva.Reserva.getMes()));
-        Object mes = String.valueOf(calend.get(Calendar.MONTH));
-        btnMes.setSelectedItem(mes);
+        Object mes = String.valueOf(calend.get(Calendar.MONTH) + 1);
+        btnMes.setSelectedIndex(calend.get(Calendar.MONTH) + 1);
 
         btnDia.setModel(new javax.swing.DefaultComboBoxModel<>(retornaDias()));
         Object dia = String.valueOf(calend.get(Calendar.DAY_OF_MONTH));
-
-        btnDia.setSelectedItem(dia);
+        btnDia.setSelectedItem(contruirData(dia));
 
         EquipamentoDBC eqDB = new EquipamentoDBC();
         Equipamento equip = eqDB.selectEquip(res.getEquipamento().getId());
@@ -341,9 +340,9 @@ public class RegReserva extends javax.swing.JPanel {
         String nEq = String.valueOf(nEquip);
 
         int ind = nEq.lastIndexOf("--");
-        System.out.println(ind);
+
         String strId = nEq.substring(ind + 3);
-        System.out.println(strId);
+
         int ID = Integer.parseInt(strId);
 
         return ID;
@@ -383,6 +382,17 @@ public class RegReserva extends javax.swing.JPanel {
 
     }
 
+    private Object contruirData(Object dt) {
+
+        String m = String.valueOf(dt);
+        if (m.length() == 1) {
+
+            m = "0" + m;
+
+        }
+
+        return m;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CpfResp;
     private javax.swing.JButton btRegistrar;

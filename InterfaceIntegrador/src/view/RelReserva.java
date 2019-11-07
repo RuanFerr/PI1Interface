@@ -31,7 +31,7 @@ public class RelReserva extends javax.swing.JPanel {
         tabRes = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabRes1 = new javax.swing.JTable();
-        cbBusca = new javax.swing.JComboBox<>();
+        cbBusca = new javax.swing.JComboBox<String>();
         jButton1 = new javax.swing.JButton();
         btnGerarPDF = new javax.swing.JButton();
 
@@ -52,11 +52,19 @@ public class RelReserva extends javax.swing.JPanel {
             new String [] {
                 "ID", "NomeEquipamento", "dataReserva", "Responsavel", "CPFResponsavel"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tabRes1);
 
         cbBusca.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cbBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "todos", "efetuadas", "canceladas", "em atraso" }));
+        cbBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "todos", "efetuadas", "canceladas", "em atraso" }));
 
         jButton1.setText("Buscar");
 

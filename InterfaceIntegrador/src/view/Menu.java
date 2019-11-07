@@ -22,10 +22,10 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         if (!(control.login.Login.getSessao().getCargo().equals("Gerente"))) {
-            
+
             mnAdmin.setEnabled(false);
             mnAdmin.setVisible(false);
-            
+
         }
     }
 

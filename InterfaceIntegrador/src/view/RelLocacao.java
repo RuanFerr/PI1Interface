@@ -30,7 +30,7 @@ public class RelLocacao extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabLocacao = new javax.swing.JTable();
         btnGerarPDF = new javax.swing.JButton();
-        cbBuscar = new javax.swing.JComboBox<>();
+        cbBuscar = new javax.swing.JComboBox<String>();
         btBuscar = new javax.swing.JButton();
 
         tabLocacao.setModel(new javax.swing.table.DefaultTableModel(
@@ -40,7 +40,15 @@ public class RelLocacao extends javax.swing.JPanel {
             new String [] {
                 "ID da Locação", "Equipamento", "Responsavel", "Data da locação", "Situação"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabLocacao);
 
         btnGerarPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon-pdf-file.png"))); // NOI18N
@@ -51,7 +59,7 @@ public class RelLocacao extends javax.swing.JPanel {
             }
         });
 
-        cbBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "todos", "efetuadas", "devolvidas", "em atraso" }));
+        cbBuscar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "todos", "efetuadas", "devolvidas", "em atraso" }));
 
         btBuscar.setText("Buscar");
 

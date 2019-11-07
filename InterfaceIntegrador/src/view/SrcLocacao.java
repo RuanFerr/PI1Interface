@@ -60,7 +60,15 @@ public class SrcLocacao extends javax.swing.JPanel {
             new String [] {
                 "ID da Locação", "Equipamento", "Responsavel", "Data da locação", "Situação"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabLocacao);
 
         btRegDevol.setText("Registrar Devolução");

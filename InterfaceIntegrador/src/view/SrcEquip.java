@@ -52,14 +52,14 @@ public class SrcEquip extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabEquip = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        cbExibir = new javax.swing.JComboBox<>();
+        cbExibir = new javax.swing.JComboBox<String>();
         pnExibir = new javax.swing.JPanel();
-        btnDia = new javax.swing.JComboBox<>();
+        btnDia = new javax.swing.JComboBox<Object>();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        btnAno = new javax.swing.JComboBox<>();
-        btnMes = new javax.swing.JComboBox<>();
+        btnAno = new javax.swing.JComboBox<String>();
+        btnMes = new javax.swing.JComboBox<String>();
         btnBuscar = new javax.swing.JButton();
         btAlterar = new javax.swing.JButton();
         btDeletar = new javax.swing.JButton();
@@ -71,12 +71,20 @@ public class SrcEquip extends javax.swing.JPanel {
             new String [] {
                 "id", "nome", "marca", "descricao", "Numero de Serie"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabEquip);
 
         jLabel1.setText("Exibir");
 
-        cbExibir.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "locados", "disponiveis" }));
+        cbExibir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos", "locados", "disponiveis" }));
         cbExibir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbExibirActionPerformed(evt);
@@ -302,7 +310,7 @@ public class SrcEquip extends javax.swing.JPanel {
         if (tabEquip.getSelectedRow() != -1) {
 
             Object[] opcoes = {"Confirmar", "Cancelar"};
-            if (JOptionPane.showOptionDialog(null, "Deleja alterar este registro?",
+            if (JOptionPane.showOptionDialog(null, "Deleja deletar este registro?",
                     "Alterar Registro",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.QUESTION_MESSAGE,

@@ -5,6 +5,13 @@
  */
 package view;
 
+import control.reserva.Equipamento;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.DBC.EquipamentoDBC;
+import model.pdf.PDFGenerator;
+
 /**
  *
  * @author Kelli
@@ -16,6 +23,7 @@ public class RelEquip extends javax.swing.JPanel {
      */
     public RelEquip() {
         initComponents();
+        fillTabAll();
     }
 
     /**
@@ -28,10 +36,10 @@ public class RelEquip extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabEquip = new javax.swing.JTable();
         btnGerarPDF = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -47,7 +55,7 @@ public class RelEquip extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabEquip);
 
         btnGerarPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon-pdf-file.png"))); // NOI18N
         btnGerarPDF.setText("Gerar PDF");
@@ -82,13 +90,60 @@ public class RelEquip extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarPDFActionPerformed
-        
+        Object[] opcoes = {"Confirmar", "Cancelar"};
+        if (JOptionPane.showOptionDialog(null, "Gerar PDF do registro?",
+                "Alterar Registro",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]) == 0) {
+
+            if (tabEquip.getSelectedRow() != -1) {
+
+                Equipamento equip = new Equipamento();
+                equip.setId(Integer.parseInt(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 0))));
+                equip.setNome(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 1)));
+                equip.setMarca(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 2)));
+                equip.setDescricao(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 3)));
+                equip.setNumSerie(Integer.parseInt(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 4))));
+
+                PDFGenerator EquipPDF = new PDFGenerator();
+                
+                
+            } else {
+            }
+        } else {
+        }
     }//GEN-LAST:event_btnGerarPDFActionPerformed
 
+    private void fillTabAll() {
+
+        EquipamentoDBC eq = new EquipamentoDBC();
+        List<Equipamento> list = eq.select();
+        DefaultTableModel dtm = (DefaultTableModel) tabEquip.getModel();
+
+        dtm.setNumRows(0);
+
+        for (Equipamento equip : list) {
+
+            Object[] row = {equip.getId(),
+                equip.getNome(),
+                equip.getMarca(),
+                equip.getDescricao(),
+                equip.getNumSerie()
+
+            };
+
+            dtm.addRow(row);
+
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerarPDF;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabEquip;
     // End of variables declaration//GEN-END:variables
 }
