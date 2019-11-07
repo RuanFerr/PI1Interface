@@ -5,6 +5,20 @@
  */
 package view;
 
+import com.itextpdf.text.DocumentException;
+import control.reserva.Equipamento;
+import control.reserva.Reserva;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.DBC.EquipamentoDBC;
+import model.DBC.ReservaDBC;
+import model.pdf.PDFGenerator;
+
 /**
  *
  * @author Kelli
@@ -16,6 +30,8 @@ public class RelReserva extends javax.swing.JPanel {
      */
     public RelReserva() {
         initComponents();
+
+        fillTabAll();
     }
 
     /**
@@ -27,25 +43,13 @@ public class RelReserva extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabRes = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tabRes1 = new javax.swing.JTable();
+        tabReserva = new javax.swing.JTable();
         cbBusca = new javax.swing.JComboBox<String>();
-        jButton1 = new javax.swing.JButton();
+        btBuscar = new javax.swing.JButton();
         btnGerarPDF = new javax.swing.JButton();
 
-        tabRes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "NomeEquipamento", "dataReserva", "Responsavel", "CPFResponsavel"
-            }
-        ));
-        jScrollPane1.setViewportView(tabRes);
-
-        tabRes1.setModel(new javax.swing.table.DefaultTableModel(
+        tabReserva.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -61,12 +65,22 @@ public class RelReserva extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tabRes1);
+        jScrollPane2.setViewportView(tabReserva);
 
         cbBusca.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cbBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "todos", "efetuadas", "canceladas", "em atraso" }));
+        cbBusca.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "todos", "efetuadas", "em atraso" }));
+        cbBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbBuscaActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Buscar");
+        btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
 
         btnGerarPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon-pdf-file.png"))); // NOI18N
         btnGerarPDF.setText("Gerar PDF");
@@ -83,8 +97,8 @@ public class RelReserva extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(cbBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
+                .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 299, Short.MAX_VALUE)
                 .addComponent(btnGerarPDF)
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,7 +114,7 @@ public class RelReserva extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnGerarPDF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbBusca)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(339, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -111,17 +125,184 @@ public class RelReserva extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarPDFActionPerformed
-        
+        Object[] opcoes = {"Confirmar", "Cancelar"};
+        if (JOptionPane.showOptionDialog(null, "Gerar PDF do registro?",
+                "Alterar Registro",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]) == 0) {
+
+            if (tabReserva.getSelectedRow() != -1) {
+
+                List<Reserva> list = new ArrayList();
+
+                Reserva res = new Reserva();
+
+                ReservaDBC resDB = new ReservaDBC();
+
+                res = resDB.selectReserva(Integer.parseInt(String.valueOf(tabReserva.getValueAt(tabReserva.getSelectedRow(), 0))));
+
+                list.add(res);
+
+                PDFGenerator ResPDF = new PDFGenerator();
+
+                try {
+                    ResPDF.exportarReservas(list);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+
+                ReservaDBC resDB = new ReservaDBC();
+                List<Reserva> list = resDB.select();
+
+                PDFGenerator equipPDF = new PDFGenerator();
+                try {
+                    equipPDF.exportarReservas(list);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        } else {
+        }
     }//GEN-LAST:event_btnGerarPDFActionPerformed
 
+    private void cbBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBuscaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbBuscaActionPerformed
 
+    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        String busca = String.valueOf(cbBusca.getSelectedItem());
+
+        switch (busca) {
+            case ("todos"):
+                fillTabAll();
+                break;
+
+            default:
+
+                ReservaDBC rs = new ReservaDBC();
+                List<Reserva> list = rs.select();
+                DefaultTableModel dtm = (DefaultTableModel) tabReserva.getModel();
+
+                dtm.setNumRows(0);
+
+                String src;
+                if (busca.equalsIgnoreCase("efetuadas")) {
+                    src = "locado";
+                } else {
+                    src = "atrasado";
+                }
+
+                for (Reserva res : list) {
+
+                    Equipamento eq;
+                    EquipamentoDBC eqDB = new EquipamentoDBC();
+                    eq = eqDB.selectEquip(res.getEquipamento().getId());
+                    if (res.getStatus().equalsIgnoreCase(src)) {
+                        Object[] row = {res.getIdReserva(),
+                            eq.getNome() + " -- " + eq.getId(),
+                            res.getDataHoraReserva(),
+                            res.getNomeResponsavel(),
+                            res.getCpfResp()
+
+                        };
+
+                        dtm.addRow(row);
+                    }
+                }
+
+                break;
+        }
+
+    }//GEN-LAST:event_btBuscarActionPerformed
+
+    private void fillTabAll() {
+
+        ReservaDBC resDB = new ReservaDBC();
+        List<Reserva> list = resDB.select();
+
+        DefaultTableModel dtm = (DefaultTableModel) tabReserva.getModel();
+        dtm.setNumRows(0);
+
+        for (Reserva res : list) {
+
+            Equipamento eq;
+            EquipamentoDBC eqDB = new EquipamentoDBC();
+            eq = eqDB.selectEquip(res.getEquipamento().getId());
+
+            Object[] row = {res.getIdReserva(),
+                eq.getNome() + " -- " + eq.getId(),
+                res.getDataHoraReserva(),
+                res.getNomeResponsavel(),
+                res.getCpfResp()
+
+            };
+
+            dtm.addRow(row);
+
+        }
+
+    }
+
+    private List<Reserva> buscarRes() {
+
+        String busca = String.valueOf(cbBusca.getSelectedItem());
+
+        List<Reserva> list = new ArrayList();
+
+        ReservaDBC resDB = new ReservaDBC();
+
+        switch (busca) {
+            case ("todos"):
+
+                list = resDB.select();
+
+                break;
+
+            default:
+
+                List<Reserva> lista = resDB.select();
+
+                String src;
+                if (busca.equalsIgnoreCase("efetuadas")) {
+                    src = "locado";
+
+                } else {
+                    src = "atrasado";
+                }
+
+                for (Reserva res : list) {
+
+                    Equipamento eq;
+                    EquipamentoDBC eqDB = new EquipamentoDBC();
+                    eq = eqDB.selectEquip(res.getEquipamento().getId());
+
+                    if (res.getStatus().equalsIgnoreCase(src)) {
+
+                        list.add(res);
+
+                    };
+
+                }
+                break;
+        }
+
+        return list;
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btBuscar;
     private javax.swing.JButton btnGerarPDF;
     private javax.swing.JComboBox<String> cbBusca;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tabRes;
-    private javax.swing.JTable tabRes1;
+    private javax.swing.JTable tabReserva;
     // End of variables declaration//GEN-END:variables
 }

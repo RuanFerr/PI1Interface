@@ -5,6 +5,24 @@
  */
 package view;
 
+import com.itextpdf.text.DocumentException;
+import control.reserva.Equipamento;
+import control.reserva.Locacao;
+import control.reserva.Reserva;
+import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.DBC.EquipamentoDBC;
+import model.DBC.LocacaoDBC;
+import model.DBC.ReservaDBC;
+import model.pdf.PDFGenerator;
+
 /**
  *
  * @author Kelli
@@ -16,6 +34,11 @@ public class RelLocacao extends javax.swing.JPanel {
      */
     public RelLocacao() {
         initComponents();
+        try {
+            fillTabAll();
+        } catch (ParseException ex) {
+            Logger.getLogger(RelLocacao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -62,6 +85,11 @@ public class RelLocacao extends javax.swing.JPanel {
         cbBuscar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "todos", "efetuadas", "devolvidas", "em atraso" }));
 
         btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -94,9 +122,165 @@ public class RelLocacao extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarPDFActionPerformed
+        Object[] opcoes = {"Confirmar", "Cancelar"};
+        if (JOptionPane.showOptionDialog(null, "Gerar PDF do registro?",
+                "Alterar Registro",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]) == 0) {
 
+            if (tabLocacao.getSelectedRow() != -1) {
+
+                List<Locacao> list = new ArrayList();
+
+                Locacao loc = new Locacao();
+
+                LocacaoDBC locDB = new LocacaoDBC();
+
+                loc = locDB.selectLocacao(Integer.parseInt(String.valueOf(tabLocacao.getValueAt(tabLocacao.getSelectedRow(), 0))));
+
+                list.add(loc);
+
+                PDFGenerator locPDF = new PDFGenerator();
+
+                try {
+                    locPDF.exportarLocacao(list);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+
+                LocacaoDBC resDB = new LocacaoDBC();
+                List<Locacao> list = resDB.select();
+
+                PDFGenerator equipPDF = new PDFGenerator();
+                try {
+                    equipPDF.exportarLocacao(list);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        } else {
+        }
     }//GEN-LAST:event_btnGerarPDFActionPerformed
 
+    private void btBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuscarActionPerformed
+        String busca = String.valueOf(cbBuscar.getSelectedItem());
+
+        switch (busca) {
+            case ("todos"): {
+                try {
+                    fillTabAll();
+                } catch (ParseException ex) {
+                    Logger.getLogger(RelLocacao.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
+
+            default:
+
+                LocacaoDBC locDB = new LocacaoDBC();
+                List<Locacao> list = locDB.select();
+                DefaultTableModel dtm = (DefaultTableModel) tabLocacao.getModel();
+
+                dtm.setNumRows(0);
+
+                String src;
+                if (busca.equalsIgnoreCase("efetuadas")) {
+                    src = "locado";
+                } else if (busca.equals("devolvidas")) {
+                    src = "devolvido";
+                } else {
+                    src = "atrasado";
+                }
+
+                for (Locacao loc : list) {
+
+                    Equipamento eq;
+
+                    EquipamentoDBC eqDB = new EquipamentoDBC();
+                    eq = eqDB.selectEquip(loc.getIdEquipamento());
+
+                    if (loc.getStatus().equalsIgnoreCase(src)) {
+                        Object[] row = {loc.getIdLocacao(),
+                            eq.getNome() + " -- " + eq.getId(),
+                            loc.getNomeResponsavel(),
+                            loc.getDataLocacao(),
+                            loc.getStatus()
+
+                        };
+
+                        dtm.addRow(row);
+                    }
+                }
+
+                break;
+        }
+
+
+    }//GEN-LAST:event_btBuscarActionPerformed
+
+    private void fillTabAll() throws ParseException {
+
+        LocacaoDBC locDB = new LocacaoDBC();
+        List<Locacao> lista = locDB.select();
+        DefaultTableModel dtm = (DefaultTableModel) tabLocacao.getModel();
+        dtm.setNumRows(0);
+
+        for (Locacao loc : lista) {
+
+            EquipamentoDBC eqDB = new EquipamentoDBC();
+
+            Equipamento eq = eqDB.selectEquip(loc.getIdEquipamento());
+
+            if (!loc.getStatus().equalsIgnoreCase("devolvido")) {
+
+                loc.setStatus(testSituacao(loc.getDataLocacao()));
+
+            };
+
+            Object[] row = {loc.getIdLocacao(),
+                eq.getNome() + " -- " + eq.getId(),
+                loc.getNomeResponsavel(),
+                loc.getDataLocacao(),
+                loc.getStatus()};
+
+            if (testSituacao(loc.getDataLocacao()).equalsIgnoreCase("atrasado") && !(loc.getStatus().equalsIgnoreCase("devolvido"))) {
+                locDB.atrasado(loc);
+            }
+
+            dtm.addRow(row);
+
+        }
+
+    }
+
+    private String testSituacao(String data) throws ParseException {
+
+        Date dataLoc = control.reserva.Reserva.formatador.parse(data);
+
+        dataLoc.setHours(23);
+        dataLoc.setMinutes(59);
+        dataLoc.setSeconds(59);
+
+        Date dthj = new Date();
+
+        if (dataLoc.before(dthj)) {
+
+            return "atrasado";
+
+        } else {
+            return "locado";
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBuscar;

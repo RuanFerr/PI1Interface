@@ -240,6 +240,7 @@ public class ReservaDBC {
                 res.setEquipamento(new Equipamento());
                 res.getEquipamento().setId(rs.getInt("idEquipamento"));
                 res.setCpfResp((rs.getString("CPFResponsavel")));
+                res.setStatus(rs.getString("status"));
 
             }
 
@@ -275,6 +276,8 @@ public class ReservaDBC {
             ConnectionFactory.closeConnection(conn, pst);
         }
 
+        
+        
     }
 
 }

@@ -5,8 +5,13 @@
  */
 package view;
 
+import com.itextpdf.text.DocumentException;
 import control.reserva.Equipamento;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.DBC.EquipamentoDBC;
@@ -108,10 +113,33 @@ public class RelEquip extends javax.swing.JPanel {
                 equip.setDescricao(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 3)));
                 equip.setNumSerie(Integer.parseInt(String.valueOf(tabEquip.getValueAt(tabEquip.getSelectedRow(), 4))));
 
+                List<Equipamento> list = new ArrayList();
+
+                list.add(equip);
+
                 PDFGenerator EquipPDF = new PDFGenerator();
-                
-                
+
+                try {
+                    EquipPDF.exportarEquipamentos(list);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
+
+                EquipamentoDBC eq = new EquipamentoDBC();
+                List<Equipamento> list = eq.select();
+
+                PDFGenerator equipPDF = new PDFGenerator();
+                try {
+                    equipPDF.exportarEquipamentos(list);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(RelEquip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         } else {
         }

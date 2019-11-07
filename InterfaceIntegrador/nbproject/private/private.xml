@@ -4,10 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/view/Menu.java</file>
-            <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/model/DBC/RelatorioDBC.java</file>
-            <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/view/SrcLocacao.java</file>
-            <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/model/DBC/LocacaoDBC.java</file>
-            <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/view/RegLocacao.java</file>
+            <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/view/RelEquip.java</file>
+            <file>file:/C:/Users/Climerio%20Neto/Documents/NetBeansProjects/pi1Interface/InterfaceIntegrador/src/model/pdf/PDFGenerator.java</file>
         </group>
     </open-files>
 </project-private>

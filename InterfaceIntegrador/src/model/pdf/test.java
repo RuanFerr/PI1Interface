@@ -24,12 +24,43 @@ import java.util.List;
 public class test {
 
     public static void main(String[] args) throws BadElementException, DocumentException, FileNotFoundException {
-        
-        String asd = "Projetorasdasda -- 13";
-        
-        int be = asd.lastIndexOf("--");
-       
-        System.out.println(asd.substring(be + 3)); 
+        try {
+            Document document = new Document();
+
+            PdfWriter pdf = PdfWriter.getInstance(document, new FileOutputStream("C:\\PDF_DevMedia.pdf"));
+
+            // Abre documento
+            document.open();
+
+            PdfPTable table = PDFGenerator.criarCabecalhoEquip(document);
+            List<Equipamento> list;
+            list = new ArrayList<Equipamento>();
+            Equipamento eq = new Equipamento();
+            eq.setId(1);
+            eq.setNome("lol");
+            eq.setMarca("lol");
+            eq.setDescricao("lol");
+            eq.setNumSerie(1);
+
+            list.add(eq);
+            Equipamento qe = new Equipamento();
+            qe.setId(2);
+            qe.setNome("rofl");
+            qe.setMarca("rofl");
+            qe.setDescricao("rofl");
+            qe.setNumSerie(2);
+            list.add(qe);
+
+            PDFGenerator.preencherDadosEquip(document, table, list);
+
+            // Encerra documento
+            document.close();
+
+        } catch (DocumentException de) {
+            System.err.println(de.getMessage());
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        }
     }
 
 }
